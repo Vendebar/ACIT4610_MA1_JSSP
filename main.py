@@ -35,7 +35,7 @@
 #  from 0-(job# x machine# -1), then we can also gaurantee correct order by comparing
 #  to the original data and changing the ordering (sorting) within rows (jobs) to ensure valid solutions
 
-#For GA, all we're rally changing is start time. the time implies
-#  order
+#For GA, all we're really changing is start time. the time implies
+#  order. If we use above, it's just order and we calculate start time. much better
 # resource on using libraries to draw gantt charts
 # https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib
