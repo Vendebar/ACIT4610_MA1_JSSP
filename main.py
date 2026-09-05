@@ -98,10 +98,9 @@ def decode_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_m
 		reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
 		current_machine_step[machine] += 1
 
-	plot_JSSP_Gantt(reconstruction, num_jobs, num_machines)
-
 	print(machine_times)
 	print(f"Makespan: {machine_times.max()}")
+	plot_JSSP_Gantt(reconstruction, num_jobs, num_machines)
 
 	return 0
 
