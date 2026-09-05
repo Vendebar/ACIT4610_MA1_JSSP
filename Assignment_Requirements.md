@@ -1,0 +1,387 @@
+# ACIT4610 Assignment 1 — Requirements Checklist
+
+> **Project:** Job Shop Scheduling Problem Using Genetic Algorithms  
+> **Course:** ACIT4610  
+> **Deadline:** September 17, 2026 at 12:00 (midday)  
+> **Submission:** One submission per group through Canvas
+
+---
+
+## 1. Project Objective
+
+- [ ] Implement a Genetic Algorithm (GA) in Python.
+- [ ] Use the GA to solve the Job Shop Scheduling Problem (JSSP).
+- [ ] Produce feasible schedules for jobs and machines.
+- [ ] Respect the required operation order within each job.
+- [ ] Ensure each machine processes at most one operation at a time.
+- [ ] Minimize the overall makespan (`Cmax`), i.e. the completion time of the final operation.
+
+---
+
+## 2. Dataset / Benchmark Requirements
+
+Use benchmark instances from **JSPLib**, specifically the **Lawrence (`la`) family** from the Lawrence1984 collection.
+
+### Small instances
+
+Select **2** instances from `la01`–`la05`.
+
+- [ ] Small instance 1 selected.
+- [ ] Small instance 2 selected.
+- [ ] Each selected instance has 10 jobs and 5 machines.
+
+### Medium instances
+
+Select **2** instances from `la16`–`la20`.
+
+- [ ] Medium instance 1 selected.
+- [ ] Medium instance 2 selected.
+- [ ] Each selected instance has 10 jobs and 10 machines.
+
+### Large instances
+
+Select **2** instances from `la31`–`la35`.
+
+- [ ] Large instance 1 selected.
+- [ ] Large instance 2 selected.
+- [ ] Each selected instance has 30 jobs and 10 machines.
+
+### Benchmark handling
+
+- [ ] Parse the number of jobs and machines from each instance.
+- [ ] Parse each job's ordered `(machine, processing_time)` operations.
+- [ ] Preserve the operation precedence defined by the input.
+- [ ] Record the JSPLib best-known bound/solution for each selected instance for comparison.
+
+---
+
+## 3. Chromosome Representation
+
+- [ ] Define a chromosome representation for a JSSP solution.
+- [ ] Document the chromosome representation in the code.
+- [ ] Document the chromosome representation in `README.md`.
+- [ ] Ensure chromosomes can be decoded into complete schedules.
+
+For an operation-based representation:
+
+- [ ] Each job identifier occurs once for each operation belonging to that job.
+- [ ] The occurrence number of a job determines which operation of that job is scheduled next.
+- [ ] Chromosomes preserve the required number of operations for every job.
+
+---
+
+## 4. Population Initialization
+
+- [ ] Implement population initialization.
+- [ ] Generate valid chromosomes.
+- [ ] Allow population size to be configured.
+- [ ] Document the initialization strategy.
+
+---
+
+## 5. Schedule Building Algorithm (SBA) / Decoder
+
+A raw chromosome is **not** itself a schedule. It must be decoded before fitness evaluation.
+
+- [ ] Implement a chromosome decoder / Schedule Building Algorithm.
+- [ ] Read operations from the chromosome in sequence.
+- [ ] Map each chromosome occurrence to the correct next operation of its job.
+- [ ] Route each operation to its required machine.
+- [ ] Enforce job precedence constraints.
+- [ ] Enforce machine-capacity constraints.
+- [ ] Prevent operations assigned to the same machine from overlapping.
+- [ ] Assign a valid start time to every operation.
+- [ ] Assign a valid finish time to every operation.
+- [ ] Produce a feasible complete schedule.
+- [ ] Calculate the makespan (`Cmax`) from the decoded schedule.
+
+### Schedule-building technique
+
+Choose and implement a conflict-resolution/building technique such as:
+
+- [ ] Semi-Active scheduling, **or**
+- [ ] Active scheduling, **or**
+- [ ] Giffler-Thompson scheduling, **or**
+- [ ] Another clearly justified valid schedule-building technique.
+
+- [ ] Document which SBA technique is used.
+- [ ] Explain how the chosen SBA finds valid machine time slots.
+
+---
+
+## 6. Fitness / Objective Function
+
+- [ ] Implement the objective function based on makespan.
+- [ ] Extract the final completion time of each job.
+- [ ] Compute `Cmax` as the maximum job completion time.
+- [ ] Use `Cmax` during GA fitness evaluation.
+- [ ] Ensure lower makespan values are treated as better solutions.
+- [ ] Document how makespan is used for selection/fitness.
+
+---
+
+## 7. Selection
+
+- [ ] Implement a parent-selection strategy.
+- [ ] Ensure the selection strategy is compatible with a minimization problem.
+- [ ] Document the selection strategy.
+
+---
+
+## 8. Crossover
+
+- [ ] Implement a crossover operator suitable for the chosen JSSP chromosome representation.
+- [ ] Ensure crossover does not produce invalid job-operation counts.
+- [ ] Make crossover probability configurable.
+- [ ] Document the crossover operator.
+
+---
+
+## 9. Mutation
+
+- [ ] Implement a mutation operator suitable for the chosen chromosome representation.
+- [ ] Ensure mutation preserves a valid chromosome.
+- [ ] Make mutation probability configurable.
+- [ ] Document the mutation operator.
+
+---
+
+## 10. Termination
+
+- [ ] Define a termination condition.
+- [ ] Support a configurable number of generations.
+- [ ] Document the termination condition.
+
+---
+
+## 11. GA Parameter Sets
+
+The complete test set must be evaluated using **three different GA parameter sets**.
+
+Each parameter set must define:
+
+- [ ] Population size.
+- [ ] Number of generations.
+- [ ] Crossover probability.
+- [ ] Mutation probability.
+
+### Parameter Set 1
+
+- [ ] Population size defined.
+- [ ] Generation count defined.
+- [ ] Crossover probability defined.
+- [ ] Mutation probability defined.
+
+### Parameter Set 2
+
+- [ ] Population size defined.
+- [ ] Generation count defined.
+- [ ] Crossover probability defined.
+- [ ] Mutation probability defined.
+
+### Parameter Set 3
+
+- [ ] Population size defined.
+- [ ] Generation count defined.
+- [ ] Crossover probability defined.
+- [ ] Mutation probability defined.
+
+---
+
+## 12. Experimental Design
+
+There are:
+
+- 3 problem-size categories.
+- 2 benchmark instances per category.
+- 3 GA parameter sets.
+
+This gives **18 benchmark/parameter-set experiment configurations** before repeated stochastic runs.
+
+- [ ] Run all 6 selected benchmark instances with Parameter Set 1.
+- [ ] Run all 6 selected benchmark instances with Parameter Set 2.
+- [ ] Run all 6 selected benchmark instances with Parameter Set 3.
+
+Because the GA is stochastic:
+
+- [ ] Perform at least 10 independent runs for every experiment configuration.
+- [ ] Preferably support up to 30 independent runs per configuration.
+- [ ] Do not base conclusions on a single run.
+
+At the minimum of 10 repetitions, this means:
+
+- [ ] Run at least **180 independent GA runs in total**.
+
+At 30 repetitions:
+
+- [ ] Support up to **540 independent GA runs in total**.
+
+---
+
+## 13. Required Statistical Metrics
+
+For every experiment configuration, calculate and store:
+
+- [ ] **Best makespan (`Cmax_min`)** — best solution found across the independent runs.
+- [ ] **Worst makespan (`Cmax_max`)** — worst solution found across the independent runs.
+- [ ] **Average (`μ`)** — mean makespan across runs.
+- [ ] **Standard deviation (`σ`)** — variation/stability across runs.
+- [ ] **Execution time (seconds)** — computational efficiency.
+- [ ] **Convergence rate** — generation number at which the best value stabilizes.
+
+Recommended for reproducibility:
+
+- [ ] Store the random seed used for each run.
+- [ ] Save raw per-run results.
+- [ ] Save per-generation best fitness/makespan values.
+
+---
+
+## 14. Comparison and Analysis Outputs
+
+- [ ] Compare performance across Small, Medium, and Large problem categories.
+- [ ] Compare all three GA parameter sets.
+- [ ] Compare solution quality using the required statistical metrics.
+- [ ] Compare execution time.
+- [ ] Compare convergence behavior.
+- [ ] Compare obtained makespans with JSPLib best-known bounds/solutions.
+- [ ] Analyze the relationship between GA parameters and obtained results.
+- [ ] Analyze how parameter values affect the early evolutionary stages.
+- [ ] Analyze how parameter values affect the later evolutionary stages.
+
+---
+
+## 15. Gantt / Schedule Visualization
+
+- [ ] Generate a Gantt chart or equivalent visualization of a decoded JSSP schedule.
+- [ ] Clearly identify machines.
+- [ ] Clearly identify jobs/operations.
+- [ ] Show operation start and finish times.
+- [ ] Ensure the visualized schedule matches the decoder output.
+
+---
+
+## 16. Chromosome-Decoding Example
+
+Prepare at least one worked example using a small benchmark or reduced illustrative instance.
+
+- [ ] Show the chromosome/genotype.
+- [ ] Show how chromosome entries map to job operations.
+- [ ] Show the operation order generated by the decoder.
+- [ ] Show start times.
+- [ ] Show finish times.
+- [ ] Show the resulting schedule, e.g. as a table.
+- [ ] Show the corresponding Gantt chart.
+- [ ] Show the resulting makespan (`Cmax`).
+
+---
+
+## 17. Code Quality / Repository Requirements
+
+- [ ] Create a GitHub repository for the project.
+- [ ] Repository is shareable.
+- [ ] Repository is well organized.
+- [ ] Code is written in Python.
+- [ ] Code is executable.
+- [ ] Code generates the required outputs.
+- [ ] Include clean source code.
+- [ ] Include inline documentation/comments where appropriate.
+- [ ] Explain key GA implementation details.
+- [ ] Explain chromosome representation.
+- [ ] Explain genetic operators.
+- [ ] Explain the schedule-building/decoding function.
+- [ ] Include example data or clear instructions for obtaining/loading it.
+- [ ] Include dependency information.
+- [ ] Include a `README.md`.
+
+Libraries such as the following may be used:
+
+- [ ] `matplotlib` if needed for Gantt charts/plots.
+- [ ] `numpy` if useful.
+- [ ] `pandas` if useful.
+
+---
+
+## 18. README Requirements
+
+`README.md` should include:
+
+- [ ] Project description.
+- [ ] Installation instructions.
+- [ ] Dependency installation instructions.
+- [ ] Step-by-step setup instructions.
+- [ ] Instructions for running the GA.
+- [ ] Instructions for running the algorithm on the example/benchmark data.
+- [ ] Explanation of repository structure.
+- [ ] Explanation of chromosome representation.
+- [ ] Explanation of the Schedule Building Algorithm / decoder.
+- [ ] Explanation of relevant genetic operators.
+
+---
+
+## 19. Report Requirements
+
+> **Important:** The assignment states that AI tools may be used for coding according to university guidelines, but **AI tools may not be used to write the report**.
+
+### Submission
+
+- [ ] Report is submitted as PDF.
+- [ ] Report is submitted through Canvas.
+- [ ] Report is between **1000 and 1500 words**.
+- [x] Report includes the published **Group No.**
+- [x] Report includes the GitHub repository link.
+- [ ] Upload Zip file of code
+
+### Report content
+
+- [ ] Describe the complete GA design in sufficient detail for replication.
+- [ ] Describe the individual/chromosome representation.
+- [ ] Describe the initialization strategy.
+- [ ] Describe the selection strategy.
+- [ ] Describe the crossover operator.
+- [ ] Describe the mutation operator.
+- [ ] Describe the termination condition.
+- [ ] Describe the SBA/decoder.
+- [ ] Include pseudocode or a clear step-by-step decoder explanation.
+- [ ] Explain how precedence constraints are enforced.
+- [ ] Explain how machine-capacity constraints are enforced.
+- [ ] Define and explain the objective/fitness function.
+- [ ] Explain how makespan is obtained from a decoded schedule.
+- [ ] Explain how makespan is used by the GA for evaluation/selection.
+- [ ] Include one complete chromosome-to-schedule decoding example.
+- [ ] Include the example chromosome.
+- [ ] Include the decoded operation order.
+- [ ] Include start/finish times or a schedule table.
+- [ ] Include a Gantt chart for the example.
+- [ ] Compare results across Small, Medium, and Large benchmarks.
+- [ ] Use all mandatory statistical metrics in the comparison.
+- [ ] Include a table summarizing required time to find solutions for all test problems using all three parameter sets.
+- [ ] Present findings and analysis.
+- [ ] Discuss correlations between GA parameters and achieved results.
+- [ ] Discuss effects of parameter values during early generations.
+- [ ] Discuss effects of parameter values during later generations.
+- [ ] Present conclusions.
+
+---
+
+## 20. Final Pre-Submission Checklist
+
+- [ ] All 6 required Lawrence benchmark instances have been tested.
+- [ ] All 3 parameter sets have been tested on all 6 instances.
+- [ ] Each configuration has at least 10 independent runs.
+- [ ] All required metrics have been calculated.
+- [ ] Results are saved and reproducible.
+- [ ] Decoder always produces feasible schedules.
+- [ ] Makespan calculation has been verified.
+- [ ] Gantt output has been verified.
+- [ ] Example chromosome decoding is complete.
+- [ ] README installation instructions work from a clean environment.
+- [ ] README run instructions work.
+- [ ] Repository contains no missing required files.
+- [ ] Repository is accessible/shareable.
+- [ ] GitHub link is included in the report.
+- [ ] Report is 1000–1500 words.
+- [ ] Group number is included.
+- [ ] Report PDF is ready for Canvas.
+- [ ] Only one group member submits.
+- [ ] Submission is completed before September 17 at 12:00.
