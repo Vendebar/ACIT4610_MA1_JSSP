@@ -65,8 +65,8 @@ def decode_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_m
 	# each index is the job related to the row in the JSSP,
 	#  and the value is the step of the job that is being scheduled
 	machine_times = np.zeros(num_machines, dtype=int)
-	current_job_step = list(np.zeros(num_jobs, dtype=int))
-	current_machine_step = list(np.zeros(num_machines, dtype=int))
+	current_job_step = np.zeros(num_jobs, dtype=int)
+	current_machine_step = np.zeros(num_machines, dtype=int)
 	previous_job_end_times = np.zeros(num_jobs, dtype=int)
 
 	reconstruction: list[list[tuple[int, int, int, int]]] = [
