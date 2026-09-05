@@ -1,3 +1,68 @@
+from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
+
+	values = Path(file_path).read_text(encoding="utf-8").split()
+	if len(values) < 2:
+		raise ValueError("The file must define the number of jobs and machines.")
+
+	try:
+		jobs, machines = map(int, values[:2])
+		schedule = list(map(int, values[2:]))
+	except ValueError as error:
+		raise ValueError("The file must contain only integers.") from error
+
+	if jobs < 0 or machines < 0:
+		raise ValueError("jobs and machines must be non-negative.")
+
+	columns = 2 * machines
+	expected_schedule_values = jobs * columns
+	if len(schedule) != expected_schedule_values:
+		raise ValueError(
+			f"Expected {expected_schedule_values} schedule values, "
+			f"but found {len(schedule)}."
+		)
+
+	JSSP = [
+		schedule[index * columns : (index + 1) * columns  ]
+		for index in range(jobs)
+	]
+	return jobs, machines, JSSP
+
+def plot_JSSP(JSSP: list[list[int]], schedule: list[int], num_machines: int):
+
+	# each index is the job related to the row in the JSSP,
+	#  and the value is the step of the job that is being scheduled
+	current_job_step = list(np.zeros(num_machines, dtype=int))
+
+	for job_task in schedule:
+		machine = JSSP[job_task][current_job_step[job_task * 2]]
+		print
+
+	return 0
+
+if __name__ == "__main__":
+
+	file = "testCases/la01.txt"
+	jobs, machines, given_JSSP = read_JSSP(file)
+	
+	print("Jobs: " + str(jobs) + ", Machines: " + str(machines))
+	for job in given_JSSP:
+		for machine, duration in zip(job[::2], job[1::2]):
+			print(" Machine: " + str(machine) + ", Duration: " + str(duration), end="")
+		print()
+
+	rng = np.random.default_rng()
+	arr = np.repeat(np.arange(1, jobs+1), machines)
+	rng.shuffle(arr)
+	print(arr)
+	print(len(arr))
+	print("bye!")
+
 # txt structure
 # jobs machines
 # each row is a job
@@ -39,3 +104,4 @@
 #  order. If we use above, it's just order and we calculate start time. much better
 # resource on using libraries to draw gantt charts
 # https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib
+
