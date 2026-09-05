@@ -23,8 +23,8 @@ def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
 	expected_schedule_values = jobs * columns
 	if len(schedule) != expected_schedule_values:
 		raise ValueError(
-			f"Expected {expected_schedule_values} schedule values, "
-			f"but found {len(schedule)}."
+			"Expected " + str(expected_schedule_values) + " schedule values, "
+			"but found " + str(len(schedule)) + "."
 		)
 
 	JSSP = [
@@ -33,15 +33,35 @@ def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
 	]
 	return jobs, machines, JSSP
 
-def plot_JSSP(JSSP: list[list[int]], schedule: list[int], num_machines: int):
+def plot_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_machines: int):
 
 	# each index is the job related to the row in the JSSP,
 	#  and the value is the step of the job that is being scheduled
-	current_job_step = list(np.zeros(num_machines, dtype=int))
+	machine_times = np.zeros(num_machines, dtype=int)
+	current_job_step = list(np.zeros(num_jobs, dtype=int))
+	previous_job_end_times = np.zeros(num_jobs, dtype=int)
+	for job in schedule:
+		machine = JSSP[job][current_job_step[job]*2]
+		duration = JSSP[job][current_job_step[job]*2 + 1]
+		current_job_step[job] = current_job_step[job] + 1
 
-	for job_task in schedule:
-		machine = JSSP[job_task][current_job_step[job_task * 2]]
-		print
+		# If the previous job on another machine ends after the current job is scheduled to start,
+		#  we need to delay the current job's start time
+		if(previous_job_end_times[job] > machine_times[machine]):
+			dead_time = previous_job_end_times[job] - machine_times[machine]
+			machine_times[machine] += dead_time                   #machine start time
+			previous_job_end_times[job] = machine_times[machine] #job start time
+			machine_times[machine] += duration                    #machine end time
+			previous_job_end_times[job] += duration               #job end time
+		else:
+			machine_times[machine] += duration
+			previous_job_end_times[job] += duration
+
+		#print("Job: " + str(job) + ", Machine: " + str(machine) + ", Duration: " + str(duration))
+		print(f"Machine times: {machine_times}")
+		print(f"Previous job end times: {previous_job_end_times}")
+
+	print(machine_times)
 
 	return 0
 
@@ -57,10 +77,11 @@ if __name__ == "__main__":
 		print()
 
 	rng = np.random.default_rng()
-	arr = np.repeat(np.arange(1, jobs+1), machines)
+	arr = np.repeat(np.arange(0, jobs), machines)
 	rng.shuffle(arr)
 	print(arr)
 	print(len(arr))
+	plot_JSSP(given_JSSP, arr, jobs, machines)
 	print("bye!")
 
 # txt structure
