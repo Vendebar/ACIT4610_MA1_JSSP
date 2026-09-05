@@ -39,7 +39,13 @@ def plot_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_mac
 	#  and the value is the step of the job that is being scheduled
 	machine_times = np.zeros(num_machines, dtype=int)
 	current_job_step = list(np.zeros(num_jobs, dtype=int))
+	current_machine_step = list(np.zeros(num_machines, dtype=int))
 	previous_job_end_times = np.zeros(num_jobs, dtype=int)
+
+	reconstruction: list[list[tuple[int, int, int, int]]] = [
+		[(-1, -1, -1, -1) for _ in range(num_jobs)] for _ in range(num_machines)
+	]
+
 	for job in schedule:
 		machine = JSSP[job][current_job_step[job]*2]
 		duration = JSSP[job][current_job_step[job]*2 + 1]
@@ -50,20 +56,65 @@ def plot_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_mac
 		if(previous_job_end_times[job] > machine_times[machine]):
 			dead_time = previous_job_end_times[job] - machine_times[machine]
 			machine_times[machine] += dead_time                   #machine start time
-			previous_job_end_times[job] = machine_times[machine] #job start time
+			start_time = machine_times[machine]
+			previous_job_end_times[job] = machine_times[machine]  #this job start time
 			machine_times[machine] += duration                    #machine end time
 			previous_job_end_times[job] += duration               #job end time
-		else:
-			machine_times[machine] += duration
-			previous_job_end_times[job] += duration
 
-		#print("Job: " + str(job) + ", Machine: " + str(machine) + ", Duration: " + str(duration))
-		print(f"Machine times: {machine_times}")
-		print(f"Previous job end times: {previous_job_end_times}")
+		else:
+			start_time = machine_times[machine]
+			machine_times[machine] += duration
+			previous_job_end_times[job] = start_time + duration
+
+		reconstruction_tuple = (job, machine, start_time, duration)
+		reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
+		current_machine_step[machine] += 1
+
+	plot_JSSP_Gantt(reconstruction, num_jobs, num_machines)
 
 	print(machine_times)
+	print(f"Makespan: {machine_times.max()}")
 
 	return 0
+
+def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_jobs: int, num_machines: int):
+
+	# Create a DataFrame to hold the Gantt chart data
+	gantt_data = []
+	for machine in range(num_machines):
+		for job_step in reconstruction[machine]:
+			job, machine_num, start_time, duration = job_step
+			if job != -1 :
+				gantt_data.append({
+					'Job': f'Job {job}',
+					'Machine': f'Machine {machine_num}',
+					'Start': start_time,
+					'Duration': duration
+				})
+
+	df = pd.DataFrame(gantt_data)
+
+	# Create the Gantt chart
+	fig, ax = plt.subplots(figsize=(10, 6))
+	job_colors = plt.colormaps['tab10'].resampled(num_jobs)
+	job_added_to_key = [bool(False) for _ in range(num_jobs)]
+	for idx, row in df.iterrows():
+		job_number = int(row['Job'].split()[-1])
+		label = row['Job'] if not job_added_to_key[job_number] else "_nolegend_"
+		ax.barh(
+			row['Machine'],
+			row['Duration'],
+			left=row['Start'],
+			color=job_colors(job_number),
+			label=label,
+		)
+		job_added_to_key[job_number] = True
+
+	ax.set_xlabel('Time')
+	ax.set_ylabel('Machines')
+	ax.set_title('Gantt Chart for JSSP')
+	ax.legend(loc='upper right')
+	plt.show()
 
 if __name__ == "__main__":
 
@@ -79,8 +130,8 @@ if __name__ == "__main__":
 	rng = np.random.default_rng()
 	arr = np.repeat(np.arange(0, jobs), machines)
 	rng.shuffle(arr)
-	print(arr)
-	print(len(arr))
+	arr = [5, 2, 9, 2, 7, 4, 6, 9, 0, 0, 7, 8, 1, 0, 6, 5, 0, 8, 7, 4, 9, 1, 8, 8, 3, 8, 3, 2, 6, 6, 4, 1, 1, 5, 7, 0, 6, 9, 4, 9, 3, 3, 1, 4, 7, 2, 5, 2, 3, 5]
+	
 	plot_JSSP(given_JSSP, arr, jobs, machines)
 	print("bye!")
 
