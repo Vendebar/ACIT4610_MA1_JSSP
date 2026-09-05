@@ -1,3 +1,30 @@
+# txt structure
+# jobs machines
+# each row is a job
+# every pair of numbers in a row is the machine number (which one) and the duration required on that machine.
+# order of pairs implies the machine order that the job must run trough
+# e.x.:
+# 10 5
+# 1 21 0 53 4 95 3 55 2 34
+# ... (9 more rows)
+# 
+# (1 21)(0 53)(4 95)(3 55)(2 34) means:
+# run this job on machine 1 for 21 min
+# then on machine 0 for 53 min
+# ... and finally, on machine 2 for 34 min
+# The genotype could be:
+# A single array of ints implying the order of job tasking, where the int represents the job number
+#  Which means a chromosome is just a single int!
+
+#For GA, all we're really changing is the order. The start time is implied by the order.
+#  Since it's now just a list where order and number of occurences matter,
+#  we can use TSP methods of crossover and mutation to generate new genotypes.
+#  The decoding function will ensure that the genotype is valid.
+
+
+# Resource on using libraries to draw gantt charts
+# https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib
+
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,7 +60,7 @@ def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
 	]
 	return jobs, machines, JSSP
 
-def schedule_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_machines: int):
+def decode_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_machines: int):
 
 	# each index is the job related to the row in the JSSP,
 	#  and the value is the step of the job that is being scheduled
@@ -53,6 +80,7 @@ def schedule_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num
 
 		# If the previous job on another machine ends after the current job is scheduled to start,
 		#  we need to delay the current job's start time
+		#  otherwise, place at the end of the current machine's schedule
 		if(previous_job_end_times[job] > machine_times[machine]):
 			dead_time = previous_job_end_times[job] - machine_times[machine]
 			machine_times[machine] += dead_time                   #machine start time
@@ -96,6 +124,7 @@ def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_j
 	df = pd.DataFrame(gantt_data)
 
 	# Create the Gantt chart
+	#NOTE It would be nice to sort the key by job number
 	fig, ax = plt.subplots(figsize=(10, 6))
 	job_colors = plt.colormaps['tab10'].resampled(num_jobs)
 	job_added_to_key = [bool(False) for _ in range(num_jobs)]
@@ -127,51 +156,8 @@ if __name__ == "__main__":
 	arr = np.repeat(np.arange(0, jobs), machines)
 	rng.shuffle(arr)
 
-	# This array is effectively our genotype, gauranteed to be valid based on the decoding function
+	# This array example is effectively our genotype, gauranteed to be valid based on the decoding function
 	#  Therefore, we can use basic TSP methods of crossover and mutation 
-	arr = [5, 2, 9, 2, 7, 4, 6, 9, 0, 0, 7, 8, 1, 0, 6, 5, 0, 8, 7, 4, 9, 1, 8, 8, 3, 8, 3, 2, 6, 6, 4, 1, 1, 5, 7, 0, 6, 9, 4, 9, 3, 3, 1, 4, 7, 2, 5, 2, 3, 5]
+	#arr = [5, 2, 9, 2, 7, 4, 6, 9, 0, 0, 7, 8, 1, 0, 6, 5, 0, 8, 7, 4, 9, 1, 8, 8, 3, 8, 3, 2, 6, 6, 4, 1, 1, 5, 7, 0, 6, 9, 4, 9, 3, 3, 1, 4, 7, 2, 5, 2, 3, 5]
 	
-	schedule_JSSP(given_JSSP, arr, jobs, machines)
-
-# txt structure
-# jobs machines
-# each row is a job
-# every pair of numbers in a row is the machine number (which one) and the duration required on that machine.
-# order of pairs implies the machine order that the job must run trough
-# e.x.:
-# 10 5
-# 1 21 0 53 4 95 3 55 2 34
-# ... (9 more rows)
-# 
-# (1 21)(0 53)(4 95)(3 55)(2 34) means:
-# run this job on machine 1 for 21 min
-# then on machine 0 for 53 min
-# ... and finally, on machine 2 for 34 min
-# each chromosome could be a 4-tuple of 4 ints,:
-# (job num, machine num, duration, start time)
-# to represent the problem space, could be:
-# 2d array of these 3-tuples that omits the machine num of the
-# 4-tuple above, row in 2d array could imply machine?
-#    NOTE This might make it harder to verify job order is correct
-# we could make it a 5-tuple including which step of the job it is
-#  to preserve job order in the tuple so we don't have to do much
-#  extra array navigation, just 1d array search+retrevial
-# we could also have a 2d array like the original data but there would be logic
-#  around the columns since that is each stage of the job?
-#  so in the setup, run everything in column one first before moving on to column 2
-#  this may perclude us from the optimals, but guarantees no conflicts
-#  [job#][job order#] so position [2][3] is job 2, and the 4th step in the job process?
-#  and the 3-tuple in there represents the machine num, duration, and time start?
-# in any case, we read in the original data as a 2d int array 
-#  for the use of initialization and verification
-#  we have to verify all jobs are run, and in order, and not overlapping
-#THE BELOW FEELS THE BEST SO FAR!!!
-#if we use a 2d array of [job#][machine#] of ints where the int represnts the next machine to run,
-#  from 0-(job# x machine# -1), then we can also gaurantee correct order by comparing
-#  to the original data and changing the ordering (sorting) within rows (jobs) to ensure valid solutions
-
-#For GA, all we're really changing is start time. the time implies
-#  order. If we use above, it's just order and we calculate start time. much better
-# resource on using libraries to draw gantt charts
-# https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib
-
+	decode_JSSP(given_JSSP, arr, jobs, machines)
