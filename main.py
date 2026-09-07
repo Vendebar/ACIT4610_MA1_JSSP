@@ -62,6 +62,7 @@ def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
     ]
     return jobs, machines, JSSP
 
+#Obsolete by method in JSSP object
 def decode_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_machines: int):
 
     # each index is the job related to the row in the JSSP,
@@ -166,7 +167,7 @@ if __name__ == "__main__":
     #print("bye!")
     #arr = np.repeat(np.arange(0, jobs), machines)
     #rng.shuffle(arr)
-    #arr = JSSP_obj.population[0]
+    arr = JSSP_obj.population[0]
     #decode_JSSP(given_JSSP, arr, jobs, machines)
     makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
     plot_JSSP_Gantt(reconstruction, jobs, machines)
