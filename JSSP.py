@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 
 class JSSP:
     def __init__(self, population_num: int, generation_num:int, crossover_rate: float, mutation_rate: float,
@@ -26,40 +27,143 @@ class JSSP:
             self.population[idx] = arr
             idx += 1
 
+    def decode_JSSP(self, schedule: list[int]) -> tuple[int, np.NDArray[np.int_]]:
+
+        # each index is the job related to the row in the JSSP,
+        #  and the value is the step of the job that is being scheduled
+        machine_times = np.zeros(self.machines_num, dtype=int)
+        current_job_step = np.zeros(self.jobs_num, dtype=int)
+        current_machine_step = np.zeros(self.machines_num, dtype=int)
+        previous_job_end_times = np.zeros(self.jobs_num, dtype=int)
+
+        reconstruction = np.full((self.machines_num, self.jobs_num, 4), -1, dtype=int)
+
+        for job in schedule:
+            machine = self.JSSP_phenotype[job][current_job_step[job]*2]
+            duration = self.JSSP_phenotype[job][current_job_step[job]*2 + 1]
+            current_job_step[job] = current_job_step[job] + 1
+
+            # If the previous job on another machine ends after the current job is scheduled to start,
+            #  we need to delay the current job's start time
+            #  otherwise, place at the end of the current machine's schedule
+            if(previous_job_end_times[job] > machine_times[machine]):
+                dead_time = previous_job_end_times[job] - machine_times[machine]
+                machine_times[machine] += dead_time                   #machine start time
+                start_time = machine_times[machine]
+                previous_job_end_times[job] = machine_times[machine]  #this job start time
+                machine_times[machine] += duration                    #machine end time
+                previous_job_end_times[job] += duration               #job end time
+
+            else:
+                start_time = machine_times[machine]
+                machine_times[machine] += duration
+                previous_job_end_times[job] = start_time + duration
+
+            reconstruction_tuple = (job, machine, start_time, duration)
+            reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
+            current_machine_step[machine] += 1
+
+        print(machine_times)
+        print(f"Makespan: {machine_times.max()}")
+
+        return machine_times.max(), reconstruction
+
     def order_crossover(self, schedule_A: np.ndarray, schedule_B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         cross_points = np.sort(self.rng.choice(self.jobs_num*self.machines_num, size=2, replace=False))
 
-        child_A = np.full(self.jobs_num*self.machines_num, self.jobs_num+1)
-        child_B = np.full(self.jobs_num*self.machines_num, self.jobs_num+1)
+        child_A = np.full(self.jobs_num*self.machines_num, self.jobs_num)
+        child_B = np.full(self.jobs_num*self.machines_num, self.jobs_num)
 
         child_A[cross_points[0]:cross_points[1]] = schedule_B[cross_points[0]:cross_points[1]]
         child_B[cross_points[0]:cross_points[1]] = schedule_A[cross_points[0]:cross_points[1]]
 
-        outer_arr_A = schedule_A[(np.arange(len(schedule_A)) < cross_points[0]) | (np.arange(len(schedule_A)) >= cross_points[1])]
-        outer_arr_B = schedule_B[(np.arange(len(schedule_B)) < cross_points[0]) | (np.arange(len(schedule_B)) >= cross_points[1])]
+        rolled_arr_A = np.roll(schedule_A, -cross_points[1])
+        rolled_arr_B = np.roll(schedule_B, -cross_points[1])
         crosspoint_span = cross_points[1]-cross_points[0]
 
         #TODO need to account for extra/too few of each job operations during crossover
-        for i in range(len(outer_arr_A)):
+        counts_A = np.bincount(child_A, minlength=self.jobs_num)
+        print(f"Child A: {child_A}")
+        print(f"Counts child_A: {counts_A}")
+        print(f"child_A roll: {rolled_arr_A}")
+        print("----------------------------------------------------------------")
+        for i in range(len(rolled_arr_A)-crosspoint_span):
             child_idx = i + cross_points[1]
             if child_idx >= child_A.size:
                 child_idx = child_idx - child_A.size
-            child_A[child_idx] = outer_arr_A[i]
+            child_A[child_idx] = rolled_arr_A[i]
             
-        for i in range(len(outer_arr_B)):
+        for i in range(len(rolled_arr_B)):
             child_idx = i + cross_points[1]
             if child_idx >= child_B.size:
                 child_idx = child_idx - child_B.size
-            child_B[child_idx] = outer_arr_B[i]
+            child_B[child_idx] = rolled_arr_B[i]
+
+        counts = np.bincount(child_B, minlength=self.jobs_num)
+        #print(f"Counts child_B: {counts}")
+        for i in range(len(rolled_arr_B)):
+            child_idx = i + cross_points[1]
+            if child_idx >= child_B.size:
+                child_idx = child_idx - child_B.size
+            child_B[child_idx] = rolled_arr_B[i]
 
         print(f"Cross points: {cross_points}")
-        counts = np.bincount(child_A, minlength=self.jobs_num+1)
+        counts = np.bincount(child_A, minlength=self.jobs_num)
         print(f"Child A:        {child_A}")
         print(f"Counts child_A: {counts}")
         print(f"Schedule_A: {schedule_A}")
         print(f"Child A:    {child_A}")
         print(f"Schedule_B: {schedule_B}")
-        print(f"Child B:    {child_B}")
+        #print(f"Child B:    {child_B}")
+
+    def jox_crossover(self, schedule_A: np.ndarray, schedule_B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        job_preserve = self.rng.integers(0,self.jobs_num)
+        child_A = copy.deepcopy(schedule_A)
+        child_B = copy.deepcopy(schedule_B)
+
+        child_idx = 0
+        for idx, value in np.ndenumerate(schedule_A):
+            if value == job_preserve:
+                continue
+            while child_B[child_idx] == job_preserve:
+                child_idx += 1
+                if child_idx >= child_B.size: break
+            child_B[child_idx] = value
+            child_idx += 1
+
+        child_idx = 0
+        for idx, value in np.ndenumerate(schedule_B):
+            if value == job_preserve:
+                continue
+            while child_A[child_idx] == job_preserve:
+                child_idx += 1
+                if child_idx >= child_A.size: break
+            child_A[child_idx] = value
+            #print(f"child_A[{child_idx}] ({child_A[child_idx]}) = {value}")
+            child_idx += 1
+
+        #print(f"Job:        {job_preserve}")
+        #print(f"Schedule_A: {schedule_A}")
+        #print(f"Child A:    {child_A}")
+        #print(f"Schedule_B: {schedule_B}")
+        #print(f"Child B:    {child_B}")
+        #counts = np.bincount(child_A, minlength=self.jobs_num)
+        #print(f"Counts child_A: {counts}")
+        #counts = np.bincount(child_B, minlength=self.jobs_num)
+        #print(f"Counts child_B: {counts}")
+
+        return child_A, child_B
+
+    def mutation_swap(self, schedule: np.ndarray) -> np.ndarray:
+        mutation_points = np.sort(self.rng.choice(schedule.size, size=2, replace=False))
+        #Let's gaurantee that the swap actually changes something
+        while schedule[mutation_points[0]] == schedule[mutation_points[1]]:
+            mutation_points = np.sort(self.rng.choice(schedule.size, size=2, replace=False))
+        schedule[[mutation_points[0], mutation_points[1]]] = schedule[[mutation_points[1], mutation_points[0]]]
+
+        return schedule
+
+
 
 
 

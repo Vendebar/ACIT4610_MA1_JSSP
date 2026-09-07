@@ -35,133 +35,138 @@ import pandas as pd
 
 def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
 
-	values = Path(file_path).read_text(encoding="utf-8").split()
-	if len(values) < 2:
-		raise ValueError("The file must define the number of jobs and machines.")
+    values = Path(file_path).read_text(encoding="utf-8").split()
+    if len(values) < 2:
+        raise ValueError("The file must define the number of jobs and machines.")
 
-	try:
-		jobs, machines = map(int, values[:2])
-		schedule = list(map(int, values[2:]))
-	except ValueError as error:
-		raise ValueError("The file must contain only integers.") from error
+    try:
+        jobs, machines = map(int, values[:2])
+        schedule = list(map(int, values[2:]))
+    except ValueError as error:
+        raise ValueError("The file must contain only integers.") from error
 
-	if jobs < 0 or machines < 0:
-		raise ValueError("jobs and machines must be non-negative.")
+    if jobs < 0 or machines < 0:
+        raise ValueError("jobs and machines must be non-negative.")
 
-	columns = 2 * machines
-	expected_schedule_values = jobs * columns
-	if len(schedule) != expected_schedule_values:
-		raise ValueError(
-			"Expected " + str(expected_schedule_values) + " schedule values, "
-			"but found " + str(len(schedule)) + "."
-		)
+    columns = 2 * machines
+    expected_schedule_values = jobs * columns
+    if len(schedule) != expected_schedule_values:
+        raise ValueError(
+            "Expected " + str(expected_schedule_values) + " schedule values, "
+            "but found " + str(len(schedule)) + "."
+        )
 
-	JSSP = [
-		schedule[index * columns : (index + 1) * columns  ]
-		for index in range(jobs)
-	]
-	return jobs, machines, JSSP
+    JSSP = [
+        schedule[index * columns : (index + 1) * columns  ]
+        for index in range(jobs)
+    ]
+    return jobs, machines, JSSP
 
 def decode_JSSP(JSSP: list[list[int]], schedule: list[int], num_jobs: int, num_machines: int):
 
-	# each index is the job related to the row in the JSSP,
-	#  and the value is the step of the job that is being scheduled
-	machine_times = np.zeros(num_machines, dtype=int)
-	current_job_step = np.zeros(num_jobs, dtype=int)
-	current_machine_step = np.zeros(num_machines, dtype=int)
-	previous_job_end_times = np.zeros(num_jobs, dtype=int)
+    # each index is the job related to the row in the JSSP,
+    #  and the value is the step of the job that is being scheduled
+    machine_times = np.zeros(num_machines, dtype=int)
+    current_job_step = np.zeros(num_jobs, dtype=int)
+    current_machine_step = np.zeros(num_machines, dtype=int)
+    previous_job_end_times = np.zeros(num_jobs, dtype=int)
 
-	reconstruction: list[list[tuple[int, int, int, int]]] = [
-		[(-1, -1, -1, -1) for _ in range(num_jobs)] for _ in range(num_machines)
-	]
+    reconstruction = np.full((num_machines, num_jobs, 4), -1, dtype=int)
 
-	for job in schedule:
-		machine = JSSP[job][current_job_step[job]*2]
-		duration = JSSP[job][current_job_step[job]*2 + 1]
-		current_job_step[job] = current_job_step[job] + 1
+    for job in schedule:
+        machine = JSSP[job][current_job_step[job]*2]
+        duration = JSSP[job][current_job_step[job]*2 + 1]
+        current_job_step[job] = current_job_step[job] + 1
 
-		# If the previous job on another machine ends after the current job is scheduled to start,
-		#  we need to delay the current job's start time
-		#  otherwise, place at the end of the current machine's schedule
-		if(previous_job_end_times[job] > machine_times[machine]):
-			dead_time = previous_job_end_times[job] - machine_times[machine]
-			machine_times[machine] += dead_time                   #machine start time
-			start_time = machine_times[machine]
-			previous_job_end_times[job] = machine_times[machine]  #this job start time
-			machine_times[machine] += duration                    #machine end time
-			previous_job_end_times[job] += duration               #job end time
+        # If the previous job on another machine ends after the current job is scheduled to start,
+        #  we need to delay the current job's start time
+        #  otherwise, place at the end of the current machine's schedule
+        if(previous_job_end_times[job] > machine_times[machine]):
+            dead_time = previous_job_end_times[job] - machine_times[machine]
+            machine_times[machine] += dead_time                   #machine start time
+            start_time = machine_times[machine]
+            previous_job_end_times[job] = machine_times[machine]  #this job start time
+            machine_times[machine] += duration                    #machine end time
+            previous_job_end_times[job] += duration               #job end time
 
-		else:
-			start_time = machine_times[machine]
-			machine_times[machine] += duration
-			previous_job_end_times[job] = start_time + duration
+        else:
+            start_time = machine_times[machine]
+            machine_times[machine] += duration
+            previous_job_end_times[job] = start_time + duration
 
-		reconstruction_tuple = (job, machine, start_time, duration)
-		reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
-		current_machine_step[machine] += 1
+        reconstruction_tuple = (job, machine, start_time, duration)
+        reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
+        current_machine_step[machine] += 1
 
-	print(machine_times)
-	print(f"Makespan: {machine_times.max()}")
-	plot_JSSP_Gantt(reconstruction, num_jobs, num_machines)
+    print(machine_times)
+    print(f"Makespan: {machine_times.max()}")
+    plot_JSSP_Gantt(reconstruction, num_jobs, num_machines)
 
-	return 0
+    return 0
 
 #the below method plot_JSSP_Gantt was mostly generated by AI with significant edits
 def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_jobs: int, num_machines: int):
 
-	# Create a DataFrame to hold the Gantt chart data
-	gantt_data = []
-	for machine in range(num_machines):
-		for job_step in reconstruction[machine]:
-			job, machine_num, start_time, duration = job_step
-			if job != -1 :
-				gantt_data.append({
-					'Job': f'Job {job}',
-					'Machine': f'Machine {machine_num}',
-					'Start': start_time,
-					'Duration': duration
-				})
+    # Create a DataFrame to hold the Gantt chart data
+    gantt_data = []
+    for machine in range(num_machines):
+        for job_step in reconstruction[machine]:
+            job, machine_num, start_time, duration = job_step
+            if job != -1 :
+                gantt_data.append({
+                    'Job': f'Job {job}',
+                    'Machine': f'Machine {machine_num}',
+                    'Start': start_time,
+                    'Duration': duration
+                })
 
-	df = pd.DataFrame(gantt_data)
+    df = pd.DataFrame(gantt_data)
 
-	# Create the Gantt chart
-	#NOTE It would be nice to sort the key by job number
-	fig, ax = plt.subplots(figsize=(10, 6))
-	job_colors = plt.colormaps['tab10'].resampled(num_jobs)
-	job_added_to_key = [bool(False) for _ in range(num_jobs)]
-	for idx, row in df.iterrows():
-		job_number = int(row['Job'].split()[-1])
-		label = row['Job'] if not job_added_to_key[job_number] else "_nolegend_"
-		ax.barh(
-			row['Machine'],
-			row['Duration'],
-			left=row['Start'],
-			color=job_colors(job_number),
-			label=label,
-		)
-		job_added_to_key[job_number] = True
+    # Create the Gantt chart
+    #NOTE It would be nice to sort the key by job number
+    fig, ax = plt.subplots(figsize=(10, 6))
+    job_colors = plt.colormaps['tab10'].resampled(num_jobs)
+    job_added_to_key = [bool(False) for _ in range(num_jobs)]
+    for idx, row in df.iterrows():
+        job_number = int(row['Job'].split()[-1])
+        label = row['Job'] if not job_added_to_key[job_number] else "_nolegend_"
+        ax.barh(
+            row['Machine'],
+            row['Duration'],
+            left=row['Start'],
+            color=job_colors(job_number),
+            label=label,
+        )
+        job_added_to_key[job_number] = True
 
-	ax.set_xlabel('Time')
-	ax.set_ylabel('Machines')
-	ax.set_title('Gantt Chart for JSSP')
-	ax.legend(loc='upper right')
-	plt.show()
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Machines')
+    ax.set_title('Gantt Chart for JSSP')
+    ax.legend(loc='upper right')
+    plt.show()
 
 if __name__ == "__main__":
 
-	if (len(sys.argv) == 1):
-		file = "testCases/la01.txt"
-	else:
-		file = "testCases/" + str(sys.argv[1])
+    if (len(sys.argv) == 1):
+        file = "testCases/ft06.txt"
+    else:
+        file = "testCases/" + str(sys.argv[1])
 
-	jobs, machines, given_JSSP = read_JSSP(file)
+    jobs, machines, given_JSSP = read_JSSP(file)
 
-	JSSP_obj = JSSP(100, 100, 0.8, 0.05, given_JSSP, jobs, machines)
+    JSSP_obj = JSSP(100, 100, 0.8, 0.05, given_JSSP, jobs, machines)
 
-	rng = np.random.default_rng()
-	crossover_parents = rng.choice(100, size=2, replace=False)
-	#print(JSSP_obj.population[crossover_parents[0]])
-	JSSP_obj.order_crossover(JSSP_obj.population[crossover_parents[0]], JSSP_obj.population[crossover_parents[1]])
+    rng = np.random.default_rng()
+    crossover_parents = rng.choice(100, size=2, replace=False)
+    #print(JSSP_obj.population[crossover_parents[0]])
+    #JSSP_obj.jox_crossover(JSSP_obj.population[crossover_parents[0]], JSSP_obj.population[crossover_parents[1]])
 
-	print("bye!")
-	#decode_JSSP(given_JSSP, arr, jobs, machines)
+    #JSSP_obj.mutation_swap(JSSP_obj.population[rng.integers(0,jobs)])
+
+    #print("bye!")
+    #arr = np.repeat(np.arange(0, jobs), machines)
+    #rng.shuffle(arr)
+    #arr = JSSP_obj.population[0]
+    #decode_JSSP(given_JSSP, arr, jobs, machines)
+    makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
+    plot_JSSP_Gantt(reconstruction, jobs, machines)
