@@ -26,7 +26,7 @@ class JSSP:
             self.population[idx] = arr
             idx += 1
 
-    def order_crossover(self, schedule_A: list[int], schedule_B: list[int]) -> tuple[list[int], list[int]]:
+    def order_crossover(self, schedule_A: np.ndarray, schedule_B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         cross_points = np.sort(self.rng.choice(self.jobs_num*self.machines_num, size=2, replace=False))
 
         child_A = np.full(self.jobs_num*self.machines_num, -1)
@@ -35,11 +35,22 @@ class JSSP:
         child_A[cross_points[0]:cross_points[1]] = schedule_B[cross_points[0]:cross_points[1]]
         child_B[cross_points[0]:cross_points[1]] = schedule_A[cross_points[0]:cross_points[1]]
 
-        idx = 0
-        for i in range(len(child_A)):
-            if child_A[i] >= 0:
-                i += cross_points[1]-cross_points[0]
-            
+        print(f"Child A:    {child_A}")
+        for i in range(len(schedule_A[cross_points[1]:])):
+            child_A[cross_points[1] + i] = schedule_A[i]
+        for i in range(len(schedule_A[:cross_points[0]])):
+            child_A[i] = schedule_A[i]
+
+        for i in range(len(schedule_B[cross_points[1]:])):
+            child_B[cross_points[1] + i] = schedule_B[i]
+        for i in range(len(schedule_B[:cross_points[0]])):
+            child_B[i] = schedule_B[i]
+
+        print(f"Cross points: {cross_points}")
+        print(f"Schedule_A: {schedule_A}")
+        print(f"Child A:    {child_A}")
+        print(f"Schedule_B: {schedule_B}")
+        print(f"Child B:    {child_B}")
 
 
 

@@ -157,5 +157,11 @@ if __name__ == "__main__":
 	jobs, machines, given_JSSP = read_JSSP(file)
 
 	JSSP_obj = JSSP(100, 100, 0.8, 0.05, given_JSSP, jobs, machines)
-	
+
+	rng = np.random.default_rng()
+	crossover_parents = rng.choice(100, size=2, replace=False)
+	print(JSSP_obj.population[crossover_parents[0]])
+	JSSP_obj.order_crossover(JSSP_obj.population[crossover_parents[0]], JSSP_obj.population[crossover_parents[1]])
+
+	print("bye!")
 	#decode_JSSP(given_JSSP, arr, jobs, machines)
