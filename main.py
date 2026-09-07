@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
 	rng = np.random.default_rng()
 	crossover_parents = rng.choice(100, size=2, replace=False)
-	print(JSSP_obj.population[crossover_parents[0]])
+	#print(JSSP_obj.population[crossover_parents[0]])
 	JSSP_obj.order_crossover(JSSP_obj.population[crossover_parents[0]], JSSP_obj.population[crossover_parents[1]])
 
 	print("bye!")
