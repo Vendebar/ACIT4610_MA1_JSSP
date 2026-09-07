@@ -25,7 +25,9 @@
 # Resource on using libraries to draw gantt charts
 # https://www.datacamp.com/tutorial/how-to-make-gantt-chart-in-python-matplotlib
 
+from JSSP import JSSP
 from pathlib import Path
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -147,16 +149,13 @@ def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_j
 
 if __name__ == "__main__":
 
-	file = "testCases/la01.txt"
-	jobs, machines, given_JSSP = read_JSSP(file)
-	
-	#below is a code snippet to randomly generate a valid genotype for initialization
-	rng = np.random.default_rng()
-	arr = np.repeat(np.arange(0, jobs), machines)
-	rng.shuffle(arr)
+	if (len(sys.argv) == 1):
+		file = "testCases/la01.txt"
+	else:
+		file = "testCases/" + str(sys.argv[1])
 
-	# This array example is effectively our genotype, gauranteed to be valid based on the decoding function
-	#  Therefore, we can use basic TSP methods of crossover and mutation 
-	#arr = [5, 2, 9, 2, 7, 4, 6, 9, 0, 0, 7, 8, 1, 0, 6, 5, 0, 8, 7, 4, 9, 1, 8, 8, 3, 8, 3, 2, 6, 6, 4, 1, 1, 5, 7, 0, 6, 9, 4, 9, 3, 3, 1, 4, 7, 2, 5, 2, 3, 5]
+	jobs, machines, given_JSSP = read_JSSP(file)
+
+	JSSP_obj = JSSP(100, 100, 0.8, 0.05, given_JSSP, jobs, machines)
 	
-	decode_JSSP(given_JSSP, arr, jobs, machines)
+	#decode_JSSP(given_JSSP, arr, jobs, machines)
