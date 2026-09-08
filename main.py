@@ -127,7 +127,8 @@ def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_j
     # Create the Gantt chart
     #NOTE It would be nice to sort the key by job number
     fig, ax = plt.subplots(figsize=(10, 6))
-    job_colors = plt.colormaps['tab10'].resampled(num_jobs)
+    job_colors = plt.colormaps['turbo'].resampled(num_jobs)
+    #job_colors = plt.colormaps['tab20c'].resampled(num_jobs)
     job_added_to_key = [bool(False) for _ in range(num_jobs)]
     for idx, row in df.iterrows():
         job_number = int(row['Job'].split()[-1])
@@ -244,11 +245,11 @@ def GA_run(JSSP_cur: JSSP):
         #print (f"Current best makespan: {individual_best_makespan}")
         JSSP_cur.population = new_population
     print(f"Idv Best Makespan: {individual_best_makespan}")
-    print(f"Idv Best: {individual_best}")
+    #print(f"Idv Best: {individual_best}")
     print(f"Idv Worst Makespan: {individual_worst_makespan}")
-    print(f"Idv Worst: {individual_worst}")
+    #print(f"Idv Worst: {individual_worst}")
     time, reconstruction = JSSP_cur.decode_JSSP(individual_best, True)
-    plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
+    #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
     #time, reconstruction = JSSP_cur.decode_JSSP(individual_worst, True)
     #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
 
@@ -256,7 +257,7 @@ def GA_run(JSSP_cur: JSSP):
 if __name__ == "__main__":
 
     if (len(sys.argv) == 1):
-        file = "testCases/la01.txt"
+        file = "testCases/la32.txt"
     else:
         file = "testCases/" + str(sys.argv[1])
 
