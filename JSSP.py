@@ -81,22 +81,21 @@ class JSSP:
 
     def calculate_population_fitness(self) -> tuple[int, np.NDArray[np.int_], int, np.NDArray[np.int_]]:
         worst_makespan = -1
-        worst_reconstruction = ""
+        worst_individual = ""
         best_makespan = -1
-        best_reconstruction = ""
+        best_individual = ""
         for index in np.ndindex(self.population.shape[0]):
             individual = self.population[index]
-            print(individual)
             makespan, reconstruction = self.decode_JSSP(individual)
             self.population_fitness[index[0]] = makespan
             if best_makespan == -1 or best_makespan > makespan:
                 best_makespan = makespan
-                best_reconstruction = reconstruction
+                best_individual = individual
             if worst_makespan < makespan:
                 worst_makespan = makespan
-                worst_reconstruction = reconstruction
+                worst_individual = individual
 
-        return best_makespan, best_reconstruction, worst_makespan, worst_reconstruction
+        return best_makespan, best_individual, worst_makespan, worst_individual
 
 
     def order_crossover(self, schedule_A: np.ndarray, schedule_B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -182,7 +181,7 @@ class JSSP:
         #counts = np.bincount(child_B, minlength=self.jobs_num)
         #print(f"Counts child_B: {counts}")
 
-        return child_A, child_B
+        return child_A.copy(), child_B.copy()
 
     def mutation_swap(self, schedule: np.ndarray) -> np.ndarray:
         mutation_points = np.sort(self.rng.choice(schedule.size, size=2, replace=False))

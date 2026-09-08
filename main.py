@@ -146,16 +146,90 @@ def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_j
     ax.legend(loc='upper right')
     plt.show()
 
-def GA_run(JSSP_cur: JSSP):
-    num_population = JSSP_cur.get_population_num()
-    num_generation = JSSP_cur.get_generation_num()
-    crossover_rate = JSSP_cur.get_crossover_rate()
-    mutation_rate  = JSSP_cur.get_mutation_rate()
+def tournament_selection(JSSP_cur):
+    candidates = rng.choice(JSSP_cur.population.shape[0], size=2, replace=False)
+    
+    if JSSP_cur.population_fitness[candidates[0]] >= JSSP_cur.population_fitness[candidates[1]]:
+        return JSSP_cur.population[candidates[0]]
 
-    #print(f"population count: {num_population}")
-    #print(f"generation count: {num_generation}")
-    #print(f"crossover rate:   {crossover_rate}")
-    #print(f"mutation rate:    {mutation_rate}")
+    return JSSP_cur.population[candidates[1]]
+
+def GA_run(JSSP_cur: JSSP):
+    num_population  = JSSP_cur.get_population_num()
+    num_generation  = JSSP_cur.get_generation_num()
+    crossover_rate  = JSSP_cur.get_crossover_rate()
+    mutation_rate   = JSSP_cur.get_mutation_rate()
+    schedule_length = JSSP_cur.jobs_num * JSSP_cur.machines_num
+
+    individual_best_makespan, individual_best, individual_worst_makespan, individual_worst \
+        = JSSP_cur.calculate_population_fitness()
+
+    for generation in range(1,num_generation + 1,):
+
+        print(f"Population of generation {generation}:")
+        print(JSSP_cur.population)
+        print(f"End population of generation {generation}")
+        generation_best_makespan, generation_best, generation_worst_makespan, generation_worst \
+                = JSSP_cur.calculate_population_fitness()
+
+        if generation_best_makespan < individual_best_makespan:
+            individual_best = generation_best.copy()
+            individual_best_makespan = generation_best_makespan
+
+        if generation_worst_makespan > individual_worst_makespan:
+            individual_worst = generation_worst.copy()
+            individual_worst_makespan = generation_worst_makespan
+
+        new_population = np.zeros((num_population,schedule_length), dtype=int)
+        index_to_add = 0
+        while index_to_add < num_population:
+
+            # Selection
+            parent1 = tournament_selection(JSSP_cur).copy()
+            parent2 = tournament_selection(JSSP_cur).copy()
+
+            # -----------------------------------------------
+            # Crossover
+            # -----------------------------------------------
+
+            crossover_probability = rng.random()
+            if crossover_probability < crossover_rate:
+                child1, child2 = JSSP_cur.jox_crossover(parent1,parent2)
+            else:
+                child1 = parent1.copy()
+                child2 = parent2.copy()
+
+            # -----------------------------------------------
+            # Mutation
+            # -----------------------------------------------
+
+            mutation_probability1 = rng.random()
+            if mutation_probability1 < mutation_rate:
+                child1 = JSSP_cur.mutation_swap(child1)
+
+            mutation_probability2 = rng.random()
+            if mutation_probability2 < mutation_rate:
+                child2 = JSSP_cur.mutation_swap(child2)
+
+            # -----------------------------------------------
+            # Add children
+            # -----------------------------------------------
+
+            print(f"Child to add: {child1}")
+            new_population[index_to_add] = child1
+            index_to_add += 1
+            if index_to_add < num_population:
+                print(f"Child to add: {child2}")
+                new_population[index_to_add] = child2
+                index_to_add += 1
+
+        print("Final new population:")
+        print(new_population)
+        JSSP_cur.population = new_population
+    print(f"Idv Best Makespan: {individual_best_makespan}")
+    print(f"Idv Best: {individual_best}")
+    print(f"Idv Worst Makespan: {individual_worst_makespan}")
+    print(f"Idv Worst: {individual_worst}")
 
 
 if __name__ == "__main__":
@@ -167,7 +241,7 @@ if __name__ == "__main__":
 
     jobs, machines, given_JSSP = read_JSSP(file)
 
-    JSSP_obj = JSSP(100, 100, 0.8, 0.05, given_JSSP, jobs, machines)
+    JSSP_obj = JSSP(5, 10, 0.8, 0.05, given_JSSP, jobs, machines)
 
     rng = np.random.default_rng()
     crossover_parents = rng.choice(100, size=2, replace=False)
@@ -183,11 +257,11 @@ if __name__ == "__main__":
     #decode_JSSP(given_JSSP, arr, jobs, machines)
     #makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
     best_makespan, best_reconstruction, worst_makespan, worst_reconstruction = JSSP_obj.calculate_population_fitness()
-    print(best_makespan)
-    print(best_reconstruction)
-    print(worst_makespan)
-    print(worst_reconstruction)
-    print(JSSP_obj.population_fitness)
+    #print(best_makespan)
+    #print(best_reconstruction)
+    #print(worst_makespan)
+    #print(worst_reconstruction)
+    #print(JSSP_obj.population_fitness)
     #for fitness in JSSP_obj.population_fitness
-    #GA_run(JSSP_obj)
+    GA_run(JSSP_obj)
     #plot_JSSP_Gantt(reconstruction, jobs, machines)
