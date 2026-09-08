@@ -31,6 +31,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import time
 
 
 def read_JSSP(file_path: str) -> tuple[int, int, list[list[int]]]:
@@ -240,6 +241,7 @@ def GA_run(JSSP_cur: JSSP):
 
         #print("Final new population:")
         #print(new_population)
+        #print (f"Current best makespan: {individual_best_makespan}")
         JSSP_cur.population = new_population
     print(f"Idv Best Makespan: {individual_best_makespan}")
     print(f"Idv Best: {individual_best}")
@@ -260,10 +262,13 @@ if __name__ == "__main__":
 
     jobs, machines, given_JSSP = read_JSSP(file)
 
-    JSSP_obj = JSSP(300, 30, 0.8, 0.1, given_JSSP, jobs, machines)
+    # Don't start time until after file operations, just in case
+    start_time = time.perf_counter()
+
+    JSSP_obj = JSSP(300, 300, 0.8, 0.1, given_JSSP, jobs, machines)
 
     rng = np.random.default_rng()
-    crossover_parents = rng.choice(100, size=2, replace=False)
+    #crossover_parents = rng.choice(100, size=2, replace=False)
     #print(JSSP_obj.population[crossover_parents[0]])
     #JSSP_obj.jox_crossover(JSSP_obj.population[crossover_parents[0]], JSSP_obj.population[crossover_parents[1]])
 
@@ -272,10 +277,10 @@ if __name__ == "__main__":
     #print("bye!")
     #arr = np.repeat(np.arange(0, jobs), machines)
     #rng.shuffle(arr)
-    arr = JSSP_obj.population[0]
+    #arr = JSSP_obj.population[0]
     #decode_JSSP(given_JSSP, arr, jobs, machines)
     #makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
-    best_makespan, best_reconstruction, worst_makespan, worst_reconstruction = JSSP_obj.calculate_population_fitness()
+    #best_makespan, best_reconstruction, worst_makespan, worst_reconstruction = JSSP_obj.calculate_population_fitness()
     #print(best_makespan)
     #print(best_reconstruction)
     #print(worst_makespan)
@@ -283,4 +288,7 @@ if __name__ == "__main__":
     #print(JSSP_obj.population_fitness)
     #for fitness in JSSP_obj.population_fitness
     GA_run(JSSP_obj)
+    end_time = time.perf_counter()
+    execution_time = end_time - start_time
+    print(f"Execution Time: {execution_time:.6f}")
     #plot_JSSP_Gantt(reconstruction, jobs, machines)
