@@ -166,9 +166,9 @@ def GA_run(JSSP_cur: JSSP):
 
     for generation in range(1,num_generation + 1,):
 
-        print(f"Population of generation {generation}:")
-        print(JSSP_cur.population)
-        print(f"End population of generation {generation}")
+        #print(f"Population of generation {generation}:")
+        #print(JSSP_cur.population)
+        #print(f"End population of generation {generation}")
         generation_best_makespan, generation_best, generation_worst_makespan, generation_worst \
                 = JSSP_cur.calculate_population_fitness()
 
@@ -203,6 +203,21 @@ def GA_run(JSSP_cur: JSSP):
             # Mutation
             # -----------------------------------------------
 
+            #print("BEGIN DEGUB PRINT------------------------------------------------------")
+            #print("object population:")
+            #print(JSSP_cur.population)
+            #print("parent1:")
+            #print(parent1)
+            #print("parent2:")
+            #print(parent2)
+            #print("child1:")
+            #print(child1)
+            #print("child2:")
+            #print(child2)
+            #print("new population:")
+            #print(new_population)
+            #print("END DEGUB PRINT--------------------------------------------------------")
+
             mutation_probability1 = rng.random()
             if mutation_probability1 < mutation_rate:
                 child1 = JSSP_cur.mutation_swap(child1)
@@ -215,33 +230,37 @@ def GA_run(JSSP_cur: JSSP):
             # Add children
             # -----------------------------------------------
 
-            print(f"Child to add: {child1}")
+            #print(f"Child to add: {child1}")
             new_population[index_to_add] = child1
             index_to_add += 1
             if index_to_add < num_population:
-                print(f"Child to add: {child2}")
+                #print(f"Child to add: {child2}")
                 new_population[index_to_add] = child2
                 index_to_add += 1
 
-        print("Final new population:")
-        print(new_population)
+        #print("Final new population:")
+        #print(new_population)
         JSSP_cur.population = new_population
     print(f"Idv Best Makespan: {individual_best_makespan}")
     print(f"Idv Best: {individual_best}")
     print(f"Idv Worst Makespan: {individual_worst_makespan}")
     print(f"Idv Worst: {individual_worst}")
+    time, reconstruction = JSSP_cur.decode_JSSP(individual_best, True)
+    #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
+    #time, reconstruction = JSSP_cur.decode_JSSP(individual_worst, True)
+    #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
 
 
 if __name__ == "__main__":
 
     if (len(sys.argv) == 1):
-        file = "testCases/ft06.txt"
+        file = "testCases/la01.txt"
     else:
         file = "testCases/" + str(sys.argv[1])
 
     jobs, machines, given_JSSP = read_JSSP(file)
 
-    JSSP_obj = JSSP(5, 10, 0.8, 0.05, given_JSSP, jobs, machines)
+    JSSP_obj = JSSP(300, 30, 0.8, 0.1, given_JSSP, jobs, machines)
 
     rng = np.random.default_rng()
     crossover_parents = rng.choice(100, size=2, replace=False)
