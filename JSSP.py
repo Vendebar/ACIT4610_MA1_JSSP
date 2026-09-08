@@ -3,20 +3,30 @@ import copy
 
 class JSSP:
     def __init__(self, population_num: int, generation_num:int, crossover_rate: float, mutation_rate: float,
-                 JSSP_phenotype: list[list[int]], jobs_num: int, machines_num: int):
+                 JSSP_phenotype: np.NDArray[np.int_], jobs_num: int, machines_num: int):
         self.population_num = population_num
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
         self.generation_num = generation_num
-        self.JSSP_phenotype = JSSP_phenotype
+        self.JSSP_phenotype = np.asarray(JSSP_phenotype)
         self.jobs_num = jobs_num
         self.machines_num = machines_num
         self.population = np.zeros((self.population_num, self.jobs_num*self.machines_num), dtype=int)
+        self.population_fitness = np.zeros(self.population.shape[0], dtype=int)
         self.initialize_population()
         self.rng = np.random.default_rng()
 
     def get_population_num(self) -> int:
         return self.population_num
+
+    def get_generation_num(self) -> int:
+        return self.generation_num
+
+    def get_crossover_rate(self) -> float:
+        return self.crossover_rate
+
+    def get_mutation_rate(self) -> float:
+        return self.mutation_rate
 
     def initialize_population(self):
         idx = 0
@@ -27,7 +37,7 @@ class JSSP:
             self.population[idx] = arr
             idx += 1
 
-    def decode_JSSP(self, schedule: list[int]) -> tuple[int, np.NDArray[np.int_]]:
+    def decode_JSSP(self, schedule: np.NDArray[np.int_], is_displayed: bool=False) -> tuple[int, np.NDArray[np.int_]]:
 
         # each index is the job related to the row in the JSSP,
         #  and the value is the step of the job that is being scheduled
@@ -36,7 +46,7 @@ class JSSP:
         current_machine_step = np.zeros(self.machines_num, dtype=int)
         previous_job_end_times = np.zeros(self.jobs_num, dtype=int)
 
-        reconstruction = np.full((self.machines_num, self.jobs_num, 4), -1, dtype=int)
+        if is_displayed: reconstruction = np.full((self.machines_num, self.jobs_num, 4), -1, dtype=int)
 
         for job in schedule:
             machine = self.JSSP_phenotype[job][current_job_step[job]*2]
@@ -59,20 +69,41 @@ class JSSP:
                 machine_times[machine] += duration
                 previous_job_end_times[job] = start_time + duration
 
-            reconstruction_tuple = (job, machine, start_time, duration)
-            reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
+            if is_displayed: reconstruction_tuple = (job, machine, start_time, duration)
+            if is_displayed: reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
             current_machine_step[machine] += 1
 
-        print(machine_times)
-        print(f"Makespan: {machine_times.max()}")
+        #print(machine_times)
+        #print(f"Makespan: {machine_times.max()}")
 
-        return machine_times.max(), reconstruction
+        if is_displayed: return machine_times.max(), reconstruction
+        return machine_times.max(), None
+
+    def calculate_population_fitness(self) -> tuple[int, np.NDArray[np.int_], int, np.NDArray[np.int_]]:
+        worst_makespan = -1
+        worst_reconstruction = ""
+        best_makespan = -1
+        best_reconstruction = ""
+        for index in np.ndindex(self.population.shape[0]):
+            individual = self.population[index]
+            print(individual)
+            makespan, reconstruction = self.decode_JSSP(individual)
+            self.population_fitness[index[0]] = makespan
+            if best_makespan == -1 or best_makespan > makespan:
+                best_makespan = makespan
+                best_reconstruction = reconstruction
+            if worst_makespan < makespan:
+                worst_makespan = makespan
+                worst_reconstruction = reconstruction
+
+        return best_makespan, best_reconstruction, worst_makespan, worst_reconstruction
+
 
     def order_crossover(self, schedule_A: np.ndarray, schedule_B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        cross_points = np.sort(self.rng.choice(self.jobs_num*self.machines_num, size=2, replace=False))
+        cross_points = np.sort(self.rng.choice(schedule_A.size, size=2, replace=False))
 
-        child_A = np.full(self.jobs_num*self.machines_num, self.jobs_num)
-        child_B = np.full(self.jobs_num*self.machines_num, self.jobs_num)
+        child_A = np.full(schedule_A.size, self.jobs_num)
+        child_B = np.full(schedule_B.size, self.jobs_num)
 
         child_A[cross_points[0]:cross_points[1]] = schedule_B[cross_points[0]:cross_points[1]]
         child_B[cross_points[0]:cross_points[1]] = schedule_A[cross_points[0]:cross_points[1]]
@@ -139,7 +170,6 @@ class JSSP:
                 child_idx += 1
                 if child_idx >= child_A.size: break
             child_A[child_idx] = value
-            #print(f"child_A[{child_idx}] ({child_A[child_idx]}) = {value}")
             child_idx += 1
 
         #print(f"Job:        {job_preserve}")

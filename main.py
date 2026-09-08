@@ -146,6 +146,18 @@ def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_j
     ax.legend(loc='upper right')
     plt.show()
 
+def GA_run(JSSP_cur: JSSP):
+    num_population = JSSP_cur.get_population_num()
+    num_generation = JSSP_cur.get_generation_num()
+    crossover_rate = JSSP_cur.get_crossover_rate()
+    mutation_rate  = JSSP_cur.get_mutation_rate()
+
+    #print(f"population count: {num_population}")
+    #print(f"generation count: {num_generation}")
+    #print(f"crossover rate:   {crossover_rate}")
+    #print(f"mutation rate:    {mutation_rate}")
+
+
 if __name__ == "__main__":
 
     if (len(sys.argv) == 1):
@@ -169,5 +181,13 @@ if __name__ == "__main__":
     #rng.shuffle(arr)
     arr = JSSP_obj.population[0]
     #decode_JSSP(given_JSSP, arr, jobs, machines)
-    makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
-    plot_JSSP_Gantt(reconstruction, jobs, machines)
+    #makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
+    best_makespan, best_reconstruction, worst_makespan, worst_reconstruction = JSSP_obj.calculate_population_fitness()
+    print(best_makespan)
+    print(best_reconstruction)
+    print(worst_makespan)
+    print(worst_reconstruction)
+    print(JSSP_obj.population_fitness)
+    #for fitness in JSSP_obj.population_fitness
+    #GA_run(JSSP_obj)
+    #plot_JSSP_Gantt(reconstruction, jobs, machines)
