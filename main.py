@@ -150,7 +150,7 @@ def plot_JSSP_Gantt(reconstruction: list[list[tuple[int, int, int, int]]], num_j
 def tournament_selection(JSSP_cur):
     candidates = rng.choice(JSSP_cur.population.shape[0], size=2, replace=False)
     
-    if JSSP_cur.population_fitness[candidates[0]] >= JSSP_cur.population_fitness[candidates[1]]:
+    if JSSP_cur.population_fitness[candidates[0]] <= JSSP_cur.population_fitness[candidates[1]]:
         return JSSP_cur.population[candidates[0]]
 
     return JSSP_cur.population[candidates[1]]
@@ -248,7 +248,7 @@ def GA_run(JSSP_cur: JSSP):
     print(f"Idv Worst Makespan: {individual_worst_makespan}")
     print(f"Idv Worst: {individual_worst}")
     time, reconstruction = JSSP_cur.decode_JSSP(individual_best, True)
-    #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
+    plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
     #time, reconstruction = JSSP_cur.decode_JSSP(individual_worst, True)
     #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
 
