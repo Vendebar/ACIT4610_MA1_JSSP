@@ -1,9 +1,10 @@
 import numpy as np
+import numpy.typing as npt
 import copy
 
 class JSSP:
     def __init__(self, population_num: int, generation_num:int, crossover_rate: float, mutation_rate: float,
-                 JSSP_phenotype: np.NDArray[np.int_], jobs_num: int, machines_num: int):
+                 JSSP_phenotype: npt.NDArray[np.int_], jobs_num: int, machines_num: int):
         self.population_num = population_num
         self.crossover_rate = crossover_rate
         self.mutation_rate = mutation_rate
@@ -37,7 +38,7 @@ class JSSP:
             self.population[idx] = arr
             idx += 1
 
-    def decode_JSSP(self, schedule: np.NDArray[np.int_], is_displayed: bool=False) -> tuple[int, np.NDArray[np.int_]]:
+    def decode_JSSP(self, schedule: npt.NDArray[np.int_], is_displayed: bool=False) -> tuple[int, npt.NDArray[np.int_]]:
 
         # each index is the job related to the row in the JSSP,
         #  and the value is the step of the job that is being scheduled
@@ -79,7 +80,7 @@ class JSSP:
         if is_displayed: return machine_times.max(), reconstruction
         return machine_times.max(), None
 
-    def calculate_population_fitness(self) -> tuple[int, np.NDArray[np.int_], int, np.NDArray[np.int_]]:
+    def calculate_population_fitness(self) -> tuple[int, npt.NDArray[np.int_], int, npt.NDArray[np.int_]]:
         worst_makespan = -1
         worst_individual = ""
         best_makespan = -1
