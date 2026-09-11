@@ -130,9 +130,11 @@ def GA_run(JSSP_cur: JSSP):
         generation_best_makespan, generation_best, generation_worst_makespan, generation_worst \
                 = JSSP_cur.calculate_population_fitness()
 
-        #just take the result and store it for actual use for the 
-        print(f"Generation {generation} avaerage makespan: {np.mean(JSSP_cur.population_fitness)}")
-        print(f"Generation {generation} avaerage std dev.: {np.std(JSSP_cur.population_fitness)}")
+        #just take the result and store it for actual use for the output
+        current_average_fitness = np.mean(JSSP_cur.population_fitness)
+        current_standard_deviation = np.std(JSSP_cur.population_fitness)
+        print(f"Generation {generation} avaerage makespan: {current_average_fitness}")
+        print(f"Generation {generation} avaerage std dev.: {current_standard_deviation}")
 
         if generation_best_makespan < individual_best_makespan:
             individual_best = generation_best.copy()
@@ -182,15 +184,13 @@ def GA_run(JSSP_cur: JSSP):
                 index_to_add += 1
 
         JSSP_cur.population = new_population
-    print(f"Idv Best Makespan: {individual_best_makespan}")
-    #print(f"Idv Best: {individual_best}")
-    print(f"Idv Worst Makespan: {individual_worst_makespan}")
-    print(f"Last Generation Improvement: {generation_converge}")
     #print(f"Idv Worst: {individual_worst}")
     time, reconstruction = JSSP_cur.decode_JSSP(individual_best, True)
     #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
     #time, reconstruction = JSSP_cur.decode_JSSP(individual_worst, True)
     #plot_JSSP_Gantt(reconstruction, JSSP_cur.jobs_num, JSSP_cur.machines_num)
+    return individual_best_makespan, individual_best, generation_converge, \
+        current_average_fitness, current_standard_deviation, individual_worst_makespan
 
 
 if __name__ == "__main__":
@@ -209,8 +209,14 @@ if __name__ == "__main__":
 
     rng = np.random.default_rng()
    
-    GA_run(JSSP_obj)
+    individual_best_makespan, individual_best, generation_converge, current_average_fitness,\
+        current_standard_deviation, individual_worst_makespan = GA_run(JSSP_obj)
+    print(f"Idv Best Makespan: {individual_best_makespan}")
+    #print(f"Idv Best: {individual_best}")
+    print(f"Idv Worst Makespan: {individual_worst_makespan}")
+    print(f"Last Generation Improvement: {generation_converge}")
     end_time = time.perf_counter()
     execution_time = end_time - start_time
     print(f"Execution Time: {execution_time:.6f}")
-    #plot_JSSP_Gantt(reconstruction, jobs, machines)
+    time, reconstruction = JSSP_obj.decode_JSSP(individual_best, True)
+    plot_JSSP_Gantt(reconstruction, jobs, machines)
