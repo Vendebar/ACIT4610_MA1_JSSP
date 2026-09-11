@@ -45,8 +45,8 @@ Select **2** instances from `la16`–`la20`.
 
 Select **2** instances from `la31`–`la35`.
 
-- [x] Large instance 1 selected.
-- [x] Large instance 2 selected.
+- [x] Large instance 1 selected. - l32
+- [x] Large instance 2 selected. - l33
 - [x] Each selected instance has 30 jobs and 10 machines.
 
 ### Benchmark handling
