@@ -13,3 +13,5 @@ Anders
 - 
 
 Note to self: we only care about the standard deviation of the final generation
+
+For analytical stats: show both for final generation and all generations 
