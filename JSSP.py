@@ -74,9 +74,6 @@ class JSSP:
             if is_displayed: reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
             current_machine_step[machine] += 1
 
-        #print(machine_times)
-        #print(f"Makespan: {machine_times.max()}")
-
         if is_displayed: return machine_times.max(), reconstruction
         return machine_times.max(), None
 
@@ -114,10 +111,6 @@ class JSSP:
 
         #TODO need to account for extra/too few of each job operations during crossover
         counts_A = np.bincount(child_A, minlength=self.jobs_num)
-        print(f"Child A: {child_A}")
-        print(f"Counts child_A: {counts_A}")
-        print(f"child_A roll: {rolled_arr_A}")
-        print("----------------------------------------------------------------")
         for i in range(len(rolled_arr_A)-crosspoint_span):
             child_idx = i + cross_points[1]
             if child_idx >= child_A.size:
@@ -131,7 +124,6 @@ class JSSP:
             child_B[child_idx] = rolled_arr_B[i]
 
         counts = np.bincount(child_B, minlength=self.jobs_num)
-        #print(f"Counts child_B: {counts}")
         for i in range(len(rolled_arr_B)):
             child_idx = i + cross_points[1]
             if child_idx >= child_B.size:
@@ -171,17 +163,6 @@ class JSSP:
                 if child_idx >= child_A.size: break
             child_A[child_idx] = value
             child_idx += 1
-
-        #print(f"Job:        {job_preserve}")
-        #print(f"Schedule_A: {schedule_A}")
-        #print(f"Child A:    {child_A}")
-        #print(f"Schedule_B: {schedule_B}")
-        #print(f"Child B:    {child_B}")
-        #counts = np.bincount(child_A, minlength=self.jobs_num)
-        #print(f"Counts child_A: {counts}")
-        #counts = np.bincount(child_B, minlength=self.jobs_num)
-        #print(f"Counts child_B: {counts}")
-
         return child_A.copy(), child_B.copy()
 
     def mutation_swap(self, schedule: np.ndarray) -> np.ndarray:

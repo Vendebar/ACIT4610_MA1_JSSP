@@ -127,10 +127,6 @@ def GA_run(JSSP_cur: JSSP):
     generation_converge = 0
 
     for generation in range(1,num_generation + 1,):
-
-        #print(f"Population of generation {generation}:")
-        #print(JSSP_cur.population)
-        #print(f"End population of generation {generation}")
         generation_best_makespan, generation_best, generation_worst_makespan, generation_worst \
                 = JSSP_cur.calculate_population_fitness()
 
@@ -158,7 +154,6 @@ def GA_run(JSSP_cur: JSSP):
             # -----------------------------------------------
             # Crossover
             # -----------------------------------------------
-
             crossover_probability = rng.random()
             if crossover_probability < crossover_rate:
                 child1, child2 = JSSP_cur.jox_crossover(parent1,parent2)
@@ -169,22 +164,6 @@ def GA_run(JSSP_cur: JSSP):
             # -----------------------------------------------
             # Mutation
             # -----------------------------------------------
-
-            #print("BEGIN DEGUB PRINT------------------------------------------------------")
-            #print("object population:")
-            #print(JSSP_cur.population)
-            #print("parent1:")
-            #print(parent1)
-            #print("parent2:")
-            #print(parent2)
-            #print("child1:")
-            #print(child1)
-            #print("child2:")
-            #print(child2)
-            #print("new population:")
-            #print(new_population)
-            #print("END DEGUB PRINT--------------------------------------------------------")
-
             mutation_probability1 = rng.random()
             if mutation_probability1 < mutation_rate:
                 child1 = JSSP_cur.mutation_swap(child1)
@@ -196,18 +175,12 @@ def GA_run(JSSP_cur: JSSP):
             # -----------------------------------------------
             # Add children
             # -----------------------------------------------
-
-            #print(f"Child to add: {child1}")
             new_population[index_to_add] = child1
             index_to_add += 1
             if index_to_add < num_population:
-                #print(f"Child to add: {child2}")
                 new_population[index_to_add] = child2
                 index_to_add += 1
 
-        #print("Final new population:")
-        #print(new_population)
-        #print (f"Current best makespan: {individual_best_makespan}")
         JSSP_cur.population = new_population
     print(f"Idv Best Makespan: {individual_best_makespan}")
     #print(f"Idv Best: {individual_best}")
@@ -235,25 +208,7 @@ if __name__ == "__main__":
     JSSP_obj = JSSP(300, 300, 0.8, 0.1, given_JSSP, jobs, machines)
 
     rng = np.random.default_rng()
-    #crossover_parents = rng.choice(100, size=2, replace=False)
-    #print(JSSP_obj.population[crossover_parents[0]])
-    #JSSP_obj.jox_crossover(JSSP_obj.population[crossover_parents[0]], JSSP_obj.population[crossover_parents[1]])
-
-    #JSSP_obj.mutation_swap(JSSP_obj.population[rng.integers(0,jobs)])
-
-    #print("bye!")
-    #arr = np.repeat(np.arange(0, jobs), machines)
-    #rng.shuffle(arr)
-    #arr = JSSP_obj.population[0]
-    #decode_JSSP(given_JSSP, arr, jobs, machines)
-    #makespan, reconstruction = JSSP_obj.decode_JSSP(arr)
-    #best_makespan, best_reconstruction, worst_makespan, worst_reconstruction = JSSP_obj.calculate_population_fitness()
-    #print(best_makespan)
-    #print(best_reconstruction)
-    #print(worst_makespan)
-    #print(worst_reconstruction)
-    #print(JSSP_obj.population_fitness)
-    #for fitness in JSSP_obj.population_fitness
+   
     GA_run(JSSP_obj)
     end_time = time.perf_counter()
     execution_time = end_time - start_time
