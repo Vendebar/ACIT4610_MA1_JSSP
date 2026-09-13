@@ -37,6 +37,7 @@ Flow:
 - Fitness: Makespan
 - Goal: Minimize Makespan
 
-Note to self: we only care about the standard deviation of the final generation
-
-For analytical stats: show both for final generation and all generations 
+# Declaration of AI usage
+No artificial intelligence was used in the writing of the report.
+Copilot (GPT-5.3 Codex) was used to assist in coding the final solution.
+The main GA program code was first developed without assistance, and then AI assistance was used for building out the solution with CLI interaction, reproducibility, logging, and modular architecture.
