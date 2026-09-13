@@ -26,11 +26,7 @@ def get_parameter_set_number(
 def get_next_run_number(
     result_directory: Path
 ) -> int:
-
-    run_files = list(
-        result_directory.glob("run_*.json")
-    )
-
+    run_files = list(result_directory.glob("run_*.json"))
     return len(run_files) + 1
 
 
@@ -40,31 +36,16 @@ def update_summary(
     parameter_set: str,
     parameters: GAParameters
 ) -> tuple[Path, dict]:
-
-    run_files = sorted(
-        result_directory.glob("run_*.json")
-    )
-
+    run_files = sorted(result_directory.glob("run_*.json"))
     runs = []
 
     for run_file in run_files:
-
-        with run_file.open(
-            "r",
-            encoding="utf-8"
-        ) as file:
-
+        with run_file.open("r", encoding="utf-8") as file:
             runs.append(
                 json.load(file)
             )
 
-    makespans = np.array(
-        [
-            run["best_makespan"]
-            for run in runs
-        ],
-        dtype=float
-    )
+    makespans = np.array([run["best_makespan"]for run in runs], dtype=float)
 
     execution_times = np.array(
         [

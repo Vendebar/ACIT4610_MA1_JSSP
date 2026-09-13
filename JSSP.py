@@ -168,38 +168,14 @@ def create_JSSP(
     parameters: GAParameters,
     seed: int | None = None,
 ) -> JSSP:
-
     return JSSP(
-
-        population_num=
-            parameters[
-                "population_size"
-            ],
-
-        generation_num=
-            parameters[
-                "generations"
-            ],
-
-        crossover_rate=
-            parameters[
-                "crossover_probability"
-            ],
-
-        mutation_rate=
-            parameters[
-                "mutation_probability"
-            ],
-
-        JSSP_phenotype=
-            problem["schedule"],
-
-        jobs_num=
-            problem["jobs"],
-
-        machines_num=
-            problem["machines"],
-
+        population_num=parameters["population_size"],
+        generation_num=parameters["generations"],
+        crossover_rate=parameters["crossover_probability"],
+        mutation_rate=parameters["mutation_probability"],
+        JSSP_phenotype=problem["schedule"],
+        jobs_num=problem["jobs"],
+        machines_num=problem["machines"],
         seed=seed
     )
 
