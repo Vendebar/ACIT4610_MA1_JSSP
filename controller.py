@@ -113,8 +113,6 @@ def controller(
             f"{individual_best_makespan}"
         )
 
-        # print(f"Idv Best: {individual_best}")
-
         print(
             f"Idv Worst Makespan: "
             f"{individual_worst_makespan}"
