@@ -1,7 +1,5 @@
 import controller
-
 from cli import choose_file, choose_parameter_set, select_runs
-
 
 def main() -> None:
     while True:
@@ -19,7 +17,6 @@ def main() -> None:
             parameters=parameters,
             runs = runs
         )
-
 
 if __name__ == "__main__":
     main()
