@@ -47,6 +47,8 @@ class JSSP:
         current_machine_step = np.zeros(self.machines_num, dtype=int)
         previous_job_end_times = np.zeros(self.jobs_num, dtype=int)
 
+        # reconstruction is only useful for displaying a Gantt chart.
+        #   It is extra unnecessary computation when running the GA regularly
         if is_displayed: reconstruction = np.full((self.machines_num, self.jobs_num, 4), -1, dtype=int)
 
         for job in schedule:
@@ -70,9 +72,10 @@ class JSSP:
                 machine_times[machine] += duration
                 previous_job_end_times[job] = start_time + duration
 
-            if is_displayed: reconstruction_tuple = (job, machine, start_time, duration)
-            if is_displayed: reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
-            current_machine_step[machine] += 1
+            if is_displayed:
+                reconstruction_tuple = (job, machine, start_time, duration)
+                reconstruction[machine][current_machine_step[machine]] = reconstruction_tuple
+                current_machine_step[machine] += 1
 
         if is_displayed: return machine_times.max(), reconstruction
         return machine_times.max(), None
