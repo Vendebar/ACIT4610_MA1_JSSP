@@ -1,0 +1,822 @@
+{
+    "instance": "la17_medium",
+    "parameter_set": "1",
+    "parameters": {
+        "population_size": 50,
+        "generations": 100,
+        "crossover_probability": 0.8,
+        "mutation_probability": 0.1
+    },
+    "run": 5,
+    "seed": 589773391,
+    "best_makespan": 899,
+    "worst_makespan": 1746,
+    "convergence_generation": 61,
+    "execution_time": 0.8454211000000669,
+    "final_population_average": 910.78,
+    "final_population_standard_deviation": 33.604339005551054,
+    "best_individual": [
+        5,
+        3,
+        2,
+        0,
+        8,
+        5,
+        9,
+        5,
+        4,
+        1,
+        4,
+        0,
+        1,
+        0,
+        6,
+        7,
+        9,
+        2,
+        0,
+        6,
+        5,
+        8,
+        2,
+        7,
+        3,
+        2,
+        4,
+        6,
+        8,
+        5,
+        9,
+        4,
+        7,
+        7,
+        4,
+        8,
+        2,
+        3,
+        7,
+        6,
+        9,
+        1,
+        5,
+        4,
+        4,
+        3,
+        0,
+        8,
+        6,
+        1,
+        2,
+        7,
+        3,
+        8,
+        2,
+        2,
+        6,
+        3,
+        9,
+        4,
+        3,
+        5,
+        0,
+        6,
+        1,
+        4,
+        1,
+        0,
+        7,
+        9,
+        3,
+        1,
+        9,
+        7,
+        9,
+        0,
+        5,
+        3,
+        5,
+        9,
+        8,
+        8,
+        7,
+        8,
+        1,
+        1,
+        2,
+        7,
+        6,
+        3,
+        0,
+        6,
+        4,
+        0,
+        5,
+        6,
+        9,
+        8,
+        1,
+        2
+    ],
+    "generations": [
+        {
+            "generation": 1,
+            "best": 1189,
+            "worst": 1686,
+            "average": 1353.26,
+            "standard_deviation": 108.3781915331678
+        },
+        {
+            "generation": 2,
+            "best": 1156,
+            "worst": 1532,
+            "average": 1302.76,
+            "standard_deviation": 89.85778986821343
+        },
+        {
+            "generation": 3,
+            "best": 1087,
+            "worst": 1476,
+            "average": 1268.08,
+            "standard_deviation": 88.15686927290466
+        },
+        {
+            "generation": 4,
+            "best": 1037,
+            "worst": 1454,
+            "average": 1251.24,
+            "standard_deviation": 82.24246105267035
+        },
+        {
+            "generation": 5,
+            "best": 1037,
+            "worst": 1404,
+            "average": 1226.76,
+            "standard_deviation": 83.45455290156434
+        },
+        {
+            "generation": 6,
+            "best": 988,
+            "worst": 1399,
+            "average": 1223.64,
+            "standard_deviation": 77.30582384270929
+        },
+        {
+            "generation": 7,
+            "best": 988,
+            "worst": 1416,
+            "average": 1196.5,
+            "standard_deviation": 89.04521323462592
+        },
+        {
+            "generation": 8,
+            "best": 972,
+            "worst": 1387,
+            "average": 1176.26,
+            "standard_deviation": 91.09331698867926
+        },
+        {
+            "generation": 9,
+            "best": 973,
+            "worst": 1493,
+            "average": 1151.02,
+            "standard_deviation": 95.40198949707495
+        },
+        {
+            "generation": 10,
+            "best": 973,
+            "worst": 1351,
+            "average": 1130.08,
+            "standard_deviation": 90.5553620720496
+        },
+        {
+            "generation": 11,
+            "best": 962,
+            "worst": 1519,
+            "average": 1102.7,
+            "standard_deviation": 94.77198953277282
+        },
+        {
+            "generation": 12,
+            "best": 959,
+            "worst": 1287,
+            "average": 1084.08,
+            "standard_deviation": 77.88654312524083
+        },
+        {
+            "generation": 13,
+            "best": 968,
+            "worst": 1311,
+            "average": 1077.24,
+            "standard_deviation": 70.19702557801149
+        },
+        {
+            "generation": 14,
+            "best": 968,
+            "worst": 1240,
+            "average": 1074.46,
+            "standard_deviation": 69.28382495214883
+        },
+        {
+            "generation": 15,
+            "best": 962,
+            "worst": 1293,
+            "average": 1073.94,
+            "standard_deviation": 72.84734998611823
+        },
+        {
+            "generation": 16,
+            "best": 962,
+            "worst": 1221,
+            "average": 1067.04,
+            "standard_deviation": 66.63511386648935
+        },
+        {
+            "generation": 17,
+            "best": 965,
+            "worst": 1188,
+            "average": 1039.4,
+            "standard_deviation": 53.514484020683604
+        },
+        {
+            "generation": 18,
+            "best": 962,
+            "worst": 1203,
+            "average": 1035.88,
+            "standard_deviation": 56.52809566932182
+        },
+        {
+            "generation": 19,
+            "best": 959,
+            "worst": 1185,
+            "average": 1023.58,
+            "standard_deviation": 49.77553214180637
+        },
+        {
+            "generation": 20,
+            "best": 962,
+            "worst": 1378,
+            "average": 1012.9,
+            "standard_deviation": 60.83296803543289
+        },
+        {
+            "generation": 21,
+            "best": 954,
+            "worst": 1125,
+            "average": 993.52,
+            "standard_deviation": 31.47966962977852
+        },
+        {
+            "generation": 22,
+            "best": 951,
+            "worst": 1051,
+            "average": 987.4,
+            "standard_deviation": 21.233935103979196
+        },
+        {
+            "generation": 23,
+            "best": 951,
+            "worst": 1068,
+            "average": 988.84,
+            "standard_deviation": 27.323513683272875
+        },
+        {
+            "generation": 24,
+            "best": 957,
+            "worst": 1076,
+            "average": 982.42,
+            "standard_deviation": 24.089906600068005
+        },
+        {
+            "generation": 25,
+            "best": 962,
+            "worst": 1109,
+            "average": 986.08,
+            "standard_deviation": 30.758309446391884
+        },
+        {
+            "generation": 26,
+            "best": 961,
+            "worst": 1076,
+            "average": 978.66,
+            "standard_deviation": 24.31921873745125
+        },
+        {
+            "generation": 27,
+            "best": 954,
+            "worst": 1093,
+            "average": 980.1,
+            "standard_deviation": 26.437284278079698
+        },
+        {
+            "generation": 28,
+            "best": 954,
+            "worst": 1155,
+            "average": 985.0,
+            "standard_deviation": 39.55300241448176
+        },
+        {
+            "generation": 29,
+            "best": 951,
+            "worst": 1091,
+            "average": 980.62,
+            "standard_deviation": 28.247399880342968
+        },
+        {
+            "generation": 30,
+            "best": 951,
+            "worst": 1053,
+            "average": 973.44,
+            "standard_deviation": 25.775306011762495
+        },
+        {
+            "generation": 31,
+            "best": 951,
+            "worst": 1167,
+            "average": 972.76,
+            "standard_deviation": 36.35247446873459
+        },
+        {
+            "generation": 32,
+            "best": 928,
+            "worst": 1127,
+            "average": 967.6,
+            "standard_deviation": 28.202127579315714
+        },
+        {
+            "generation": 33,
+            "best": 928,
+            "worst": 1018,
+            "average": 959.52,
+            "standard_deviation": 15.527060249770399
+        },
+        {
+            "generation": 34,
+            "best": 928,
+            "worst": 1203,
+            "average": 967.8,
+            "standard_deviation": 39.4289233938742
+        },
+        {
+            "generation": 35,
+            "best": 928,
+            "worst": 1114,
+            "average": 965.68,
+            "standard_deviation": 34.884059396807594
+        },
+        {
+            "generation": 36,
+            "best": 928,
+            "worst": 1157,
+            "average": 960.26,
+            "standard_deviation": 35.468752444933834
+        },
+        {
+            "generation": 37,
+            "best": 922,
+            "worst": 1073,
+            "average": 957.12,
+            "standard_deviation": 32.45898334821965
+        },
+        {
+            "generation": 38,
+            "best": 922,
+            "worst": 1074,
+            "average": 949.08,
+            "standard_deviation": 28.639022329681573
+        },
+        {
+            "generation": 39,
+            "best": 922,
+            "worst": 1150,
+            "average": 952.36,
+            "standard_deviation": 40.77879841290079
+        },
+        {
+            "generation": 40,
+            "best": 922,
+            "worst": 1119,
+            "average": 951.06,
+            "standard_deviation": 44.016092511716664
+        },
+        {
+            "generation": 41,
+            "best": 913,
+            "worst": 1012,
+            "average": 937.62,
+            "standard_deviation": 18.683564970315487
+        },
+        {
+            "generation": 42,
+            "best": 913,
+            "worst": 1007,
+            "average": 932.34,
+            "standard_deviation": 16.774516386471472
+        },
+        {
+            "generation": 43,
+            "best": 913,
+            "worst": 1079,
+            "average": 937.5,
+            "standard_deviation": 31.955750656180804
+        },
+        {
+            "generation": 44,
+            "best": 913,
+            "worst": 1116,
+            "average": 932.82,
+            "standard_deviation": 30.843274793705028
+        },
+        {
+            "generation": 45,
+            "best": 913,
+            "worst": 1016,
+            "average": 925.5,
+            "standard_deviation": 15.077466630704246
+        },
+        {
+            "generation": 46,
+            "best": 911,
+            "worst": 1073,
+            "average": 926.58,
+            "standard_deviation": 27.871196601509595
+        },
+        {
+            "generation": 47,
+            "best": 911,
+            "worst": 1155,
+            "average": 944.24,
+            "standard_deviation": 63.32505349385818
+        },
+        {
+            "generation": 48,
+            "best": 911,
+            "worst": 1039,
+            "average": 923.3,
+            "standard_deviation": 24.37806390999909
+        },
+        {
+            "generation": 49,
+            "best": 902,
+            "worst": 959,
+            "average": 916.32,
+            "standard_deviation": 8.998755469507993
+        },
+        {
+            "generation": 50,
+            "best": 911,
+            "worst": 974,
+            "average": 915.92,
+            "standard_deviation": 11.341675361250648
+        },
+        {
+            "generation": 51,
+            "best": 911,
+            "worst": 956,
+            "average": 916.44,
+            "standard_deviation": 10.297883277644974
+        },
+        {
+            "generation": 52,
+            "best": 902,
+            "worst": 1037,
+            "average": 921.18,
+            "standard_deviation": 22.837416666514624
+        },
+        {
+            "generation": 53,
+            "best": 902,
+            "worst": 1088,
+            "average": 924.5,
+            "standard_deviation": 34.7593152982046
+        },
+        {
+            "generation": 54,
+            "best": 902,
+            "worst": 986,
+            "average": 914.46,
+            "standard_deviation": 16.068864303366308
+        },
+        {
+            "generation": 55,
+            "best": 902,
+            "worst": 1116,
+            "average": 918.3,
+            "standard_deviation": 33.23747884542388
+        },
+        {
+            "generation": 56,
+            "best": 902,
+            "worst": 1062,
+            "average": 915.96,
+            "standard_deviation": 29.295706170017475
+        },
+        {
+            "generation": 57,
+            "best": 902,
+            "worst": 1082,
+            "average": 921.42,
+            "standard_deviation": 37.460427119828736
+        },
+        {
+            "generation": 58,
+            "best": 902,
+            "worst": 1061,
+            "average": 923.38,
+            "standard_deviation": 40.585657565203995
+        },
+        {
+            "generation": 59,
+            "best": 902,
+            "worst": 1157,
+            "average": 920.12,
+            "standard_deviation": 42.47099716276979
+        },
+        {
+            "generation": 60,
+            "best": 902,
+            "worst": 1139,
+            "average": 914.92,
+            "standard_deviation": 40.483991898032976
+        },
+        {
+            "generation": 61,
+            "best": 899,
+            "worst": 1017,
+            "average": 907.64,
+            "standard_deviation": 20.90048803257953
+        },
+        {
+            "generation": 62,
+            "best": 899,
+            "worst": 1002,
+            "average": 910.78,
+            "standard_deviation": 23.85228710207891
+        },
+        {
+            "generation": 63,
+            "best": 899,
+            "worst": 1007,
+            "average": 909.4,
+            "standard_deviation": 21.61110825478416
+        },
+        {
+            "generation": 64,
+            "best": 899,
+            "worst": 977,
+            "average": 904.5,
+            "standard_deviation": 11.230761327710601
+        },
+        {
+            "generation": 65,
+            "best": 899,
+            "worst": 992,
+            "average": 903.88,
+            "standard_deviation": 12.63588540625468
+        },
+        {
+            "generation": 66,
+            "best": 899,
+            "worst": 1027,
+            "average": 913.96,
+            "standard_deviation": 27.95207326836419
+        },
+        {
+            "generation": 67,
+            "best": 899,
+            "worst": 1088,
+            "average": 909.98,
+            "standard_deviation": 30.62384038620891
+        },
+        {
+            "generation": 68,
+            "best": 902,
+            "worst": 1029,
+            "average": 908.6,
+            "standard_deviation": 21.055165636964244
+        },
+        {
+            "generation": 69,
+            "best": 899,
+            "worst": 927,
+            "average": 902.44,
+            "standard_deviation": 3.533610052057244
+        },
+        {
+            "generation": 70,
+            "best": 899,
+            "worst": 977,
+            "average": 906.78,
+            "standard_deviation": 15.672000510464512
+        },
+        {
+            "generation": 71,
+            "best": 899,
+            "worst": 1027,
+            "average": 910.3,
+            "standard_deviation": 24.7905223825558
+        },
+        {
+            "generation": 72,
+            "best": 902,
+            "worst": 1086,
+            "average": 911.92,
+            "standard_deviation": 31.7759909365546
+        },
+        {
+            "generation": 73,
+            "best": 902,
+            "worst": 1012,
+            "average": 907.94,
+            "standard_deviation": 20.9259742903407
+        },
+        {
+            "generation": 74,
+            "best": 902,
+            "worst": 1004,
+            "average": 910.14,
+            "standard_deviation": 23.78824079245878
+        },
+        {
+            "generation": 75,
+            "best": 902,
+            "worst": 1091,
+            "average": 916.02,
+            "standard_deviation": 39.67492407050076
+        },
+        {
+            "generation": 76,
+            "best": 902,
+            "worst": 1027,
+            "average": 917.48,
+            "standard_deviation": 35.76715812026446
+        },
+        {
+            "generation": 77,
+            "best": 902,
+            "worst": 1027,
+            "average": 914.44,
+            "standard_deviation": 30.737052558760414
+        },
+        {
+            "generation": 78,
+            "best": 899,
+            "worst": 1181,
+            "average": 915.68,
+            "standard_deviation": 52.02708525374067
+        },
+        {
+            "generation": 79,
+            "best": 899,
+            "worst": 1033,
+            "average": 912.02,
+            "standard_deviation": 29.58681463084527
+        },
+        {
+            "generation": 80,
+            "best": 899,
+            "worst": 1027,
+            "average": 912.9,
+            "standard_deviation": 27.79298472636575
+        },
+        {
+            "generation": 81,
+            "best": 899,
+            "worst": 1007,
+            "average": 907.94,
+            "standard_deviation": 20.25379964352368
+        },
+        {
+            "generation": 82,
+            "best": 899,
+            "worst": 1049,
+            "average": 910.86,
+            "standard_deviation": 29.458452097827543
+        },
+        {
+            "generation": 83,
+            "best": 899,
+            "worst": 1019,
+            "average": 905.66,
+            "standard_deviation": 21.108870173460254
+        },
+        {
+            "generation": 84,
+            "best": 899,
+            "worst": 1010,
+            "average": 905.3,
+            "standard_deviation": 20.856893344887197
+        },
+        {
+            "generation": 85,
+            "best": 899,
+            "worst": 1138,
+            "average": 917.34,
+            "standard_deviation": 46.72841105794204
+        },
+        {
+            "generation": 86,
+            "best": 899,
+            "worst": 1038,
+            "average": 907.88,
+            "standard_deviation": 28.90995676233363
+        },
+        {
+            "generation": 87,
+            "best": 899,
+            "worst": 899,
+            "average": 899.0,
+            "standard_deviation": 0.0
+        },
+        {
+            "generation": 88,
+            "best": 899,
+            "worst": 973,
+            "average": 902.34,
+            "standard_deviation": 12.982465097199375
+        },
+        {
+            "generation": 89,
+            "best": 899,
+            "worst": 1201,
+            "average": 906.96,
+            "standard_deviation": 43.54811591791315
+        },
+        {
+            "generation": 90,
+            "best": 899,
+            "worst": 1093,
+            "average": 913.76,
+            "standard_deviation": 44.00116362097712
+        },
+        {
+            "generation": 91,
+            "best": 899,
+            "worst": 1094,
+            "average": 907.52,
+            "standard_deviation": 31.426892942192044
+        },
+        {
+            "generation": 92,
+            "best": 899,
+            "worst": 980,
+            "average": 900.62,
+            "standard_deviation": 11.34
+        },
+        {
+            "generation": 93,
+            "best": 899,
+            "worst": 965,
+            "average": 903.7,
+            "standard_deviation": 15.997812350443422
+        },
+        {
+            "generation": 94,
+            "best": 899,
+            "worst": 1090,
+            "average": 913.08,
+            "standard_deviation": 36.823275248136206
+        },
+        {
+            "generation": 95,
+            "best": 899,
+            "worst": 1053,
+            "average": 912.6,
+            "standard_deviation": 34.66583332331707
+        },
+        {
+            "generation": 96,
+            "best": 899,
+            "worst": 1180,
+            "average": 922.28,
+            "standard_deviation": 53.39214923563201
+        },
+        {
+            "generation": 97,
+            "best": 899,
+            "worst": 1024,
+            "average": 904.8,
+            "standard_deviation": 23.83275057562597
+        },
+        {
+            "generation": 98,
+            "best": 899,
+            "worst": 1080,
+            "average": 907.52,
+            "standard_deviation": 31.8918422170937
+        },
+        {
+            "generation": 99,
+            "best": 899,
+            "worst": 1151,
+            "average": 911.78,
+            "standard_deviation": 44.44290269548108
+        },
+        {
+            "generation": 100,
+            "best": 899,
+            "worst": 1036,
+            "average": 910.78,
+            "standard_deviation": 33.604339005551054
+        }
+    ]
+}
