@@ -1,0 +1,2 @@
+Folder contains a static copy of all summary files used for writing the report
+Useful, since program currently updates the summary files, and it would muddy the execution time stats if different machines were used.
