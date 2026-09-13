@@ -62,7 +62,6 @@ class JSSP:
             if(previous_job_end_times[job] > machine_times[machine]):
                 dead_time = previous_job_end_times[job] - machine_times[machine]
                 machine_times[machine] += dead_time                   #machine start time
-                start_time = machine_times[machine]
                 previous_job_end_times[job] = machine_times[machine]  #this job start time
                 machine_times[machine] += duration                    #machine end time
                 previous_job_end_times[job] += duration               #job end time
