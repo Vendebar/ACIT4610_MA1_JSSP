@@ -8,7 +8,6 @@ from ga import GA_run
 from gantt_builder import plot_JSSP_Gantt
 from results import save_run
 
-
 def controller(
     filepath: str,
     parameters: GAParameters,

@@ -25,7 +25,7 @@ Anders Jørgensen || AndersJorgensen04
     Next step is to select 1 of the parameters sets provided.
     Lastly select how many individual runs you want to do (1-100).
 ### 5. Results
-    Results are saved in files under forexample "results/la01_small/parameter_1", best_gantt for the problem is also saved here.
+    Results are saved in files under results, for example "results/la01_small/parameter_1", best_gantt for the problem is also saved here.
 ## Code Flow
 
 The solution uses a simple CLI + Controller design.
