@@ -7,8 +7,25 @@ Alex Fathman || Vendebar
 
 Carl Christian Roll-Lund || 99CCC
 
-Anders
+Anders Jørgensen || AndersJorgensen04
 
+## Installation guide / How to run the program
+
+#### 1. Clone the github repository
+    git clone the repository.
+
+### 2.  Install dependencies
+    Do "pip install -r requirements.txt".
+
+### 3. Starting the program
+    Type "python main.py" into the console.
+
+### 4. Running the GA
+    After starting the program you will shortly be prompted 7 options, select the job scheduling problem you want to solve.
+    Next step is to select 1 of the parameters sets provided.
+    Lastly select how many individual runs you want to do (1-100).
+### 5. Results
+    Results are saved in files under forexample "results/la01_small/parameter_1", best_gantt for the problem is also saved here.
 ## Code Flow
 
 The solution uses a simple CLI + Controller design.
