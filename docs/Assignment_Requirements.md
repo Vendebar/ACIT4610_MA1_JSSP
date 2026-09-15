@@ -68,8 +68,8 @@ Select **2** instances from `la31`–`la35`.
 For an operation-based representation:
 
 - [x] Each job identifier occurs once for each operation belonging to that job.
-- [ ] The occurrence number of a job determines which operation of that job is scheduled next.
-- [ ] Chromosomes preserve the required number of operations for every job.
+- [x] The occurrence number of a job determines which operation of that job is scheduled next.
+- [x] Chromosomes preserve the required number of operations for every job.
 
 ---
 
@@ -105,7 +105,7 @@ Choose and implement a conflict-resolution/building technique such as:
 - [ ] Semi-Active scheduling, **or**
 - [ ] Active scheduling, **or**
 - [ ] Giffler-Thompson scheduling, **or**
-- [ ] Another clearly justified valid schedule-building technique.
+- [x] Another clearly justified valid schedule-building technique.
 
 - [x] Document which SBA technique is used.
 - [x] Explain how the chosen SBA finds valid machine time slots.
@@ -370,22 +370,22 @@ Libraries such as the following may be used:
 
 ## 20. Final Pre-Submission Checklist
 
-- [ ] All 6 required Lawrence benchmark instances have been tested.
-- [ ] All 3 parameter sets have been tested on all 6 instances.
-- [ ] Each configuration has at least 10 independent runs.
-- [ ] All required metrics have been calculated.
-- [ ] Results are saved and reproducible.
-- [ ] Decoder always produces feasible schedules.
-- [ ] Makespan calculation has been verified.
-- [ ] Gantt output has been verified.
-- [ ] Example chromosome decoding is complete.
-- [ ] README installation instructions work from a clean environment.
-- [ ] README run instructions work.
-- [ ] Repository contains no missing required files.
-- [ ] Repository is accessible/shareable.
-- [ ] GitHub link is included in the report.
-- [ ] Report is 1000–1500 words.
-- [ ] Group number is included.
-- [ ] Report PDF is ready for Canvas.
-- [ ] Only one group member submits.
-- [ ] Submission is completed before September 17 at 12:00.
+- [x] All 6 required Lawrence benchmark instances have been tested.
+- [x] All 3 parameter sets have been tested on all 6 instances.
+- [x] Each configuration has at least 10 independent runs.
+- [x] All required metrics have been calculated.
+- [x] Results are saved and reproducible.
+- [x] Decoder always produces feasible schedules.
+- [x] Makespan calculation has been verified.
+- [x] Gantt output has been verified.
+- [x] Example chromosome decoding is complete.
+- [x] README installation instructions work from a clean environment.
+- [x] README run instructions work.
+- [x] Repository contains no missing required files.
+- [x] Repository is accessible/shareable.
+- [x] GitHub link is included in the report.
+- [x] Report is 1000–1500 words.
+- [x] Group number is included.
+- [x] Report PDF is ready for Canvas.
+- [x] Only one group member submits.
+- [x] Submission is completed before September 17 at 12:00.
