@@ -60,14 +60,14 @@ Select **2** instances from `la31`–`la35`.
 
 ## 3. Chromosome Representation
 
-- [ ] Define a chromosome representation for a JSSP solution.
+- [x] Define a chromosome representation for a JSSP solution.
 - [ ] Document the chromosome representation in the code.
 - [ ] Document the chromosome representation in `README.md`.
-- [ ] Ensure chromosomes can be decoded into complete schedules.
+- [x] Ensure chromosomes can be decoded into complete schedules.
 
 For an operation-based representation:
 
-- [ ] Each job identifier occurs once for each operation belonging to that job.
+- [x] Each job identifier occurs once for each operation belonging to that job.
 - [ ] The occurrence number of a job determines which operation of that job is scheduled next.
 - [ ] Chromosomes preserve the required number of operations for every job.
 
@@ -75,10 +75,10 @@ For an operation-based representation:
 
 ## 4. Population Initialization
 
-- [ ] Implement population initialization.
-- [ ] Generate valid chromosomes.
-- [ ] Allow population size to be configured.
-- [ ] Document the initialization strategy.
+- [x] Implement population initialization.
+- [x] Generate valid chromosomes.
+- [x] Allow population size to be configured.
+- [x] Document the initialization strategy.
 
 ---
 
@@ -86,16 +86,16 @@ For an operation-based representation:
 
 A raw chromosome is **not** itself a schedule. It must be decoded before fitness evaluation.
 
-- [ ] Implement a chromosome decoder / Schedule Building Algorithm.
-- [ ] Read operations from the chromosome in sequence.
-- [ ] Map each chromosome occurrence to the correct next operation of its job.
+- [x] Implement a chromosome decoder / Schedule Building Algorithm.
+- [x] Read operations from the chromosome in sequence.
+- [x] Map each chromosome occurrence to the correct next operation of its job.
 - [ ] Route each operation to its required machine.
-- [ ] Enforce job precedence constraints.
+- [x] Enforce job precedence constraints.
 - [ ] Enforce machine-capacity constraints.
-- [ ] Prevent operations assigned to the same machine from overlapping.
-- [ ] Assign a valid start time to every operation.
-- [ ] Assign a valid finish time to every operation.
-- [ ] Produce a feasible complete schedule.
+- [x] Prevent operations assigned to the same machine from overlapping.
+- [x] Assign a valid start time to every operation.
+- [x] Assign a valid finish time to every operation.
+- [x] Produce a feasible complete schedule.
 - [ ] Calculate the makespan (`Cmax`) from the decoded schedule.
 
 ### Schedule-building technique
@@ -142,18 +142,18 @@ Choose and implement a conflict-resolution/building technique such as:
 
 ## 9. Mutation
 
-- [ ] Implement a mutation operator suitable for the chosen chromosome representation.
-- [ ] Ensure mutation preserves a valid chromosome.
-- [ ] Make mutation probability configurable.
-- [ ] Document the mutation operator.
+- [x] Implement a mutation operator suitable for the chosen chromosome representation.
+- [x] Ensure mutation preserves a valid chromosome.
+- [x] Make mutation probability configurable.
+- [x] Document the mutation operator.
 
 ---
 
 ## 10. Termination
 
-- [ ] Define a termination condition.
-- [ ] Support a configurable number of generations.
-- [ ] Document the termination condition.
+- [x] Define a termination condition.
+- [x] Support a configurable number of generations.
+- [x] Document the termination condition.
 
 ---
 
@@ -163,31 +163,31 @@ The complete test set must be evaluated using **three different GA parameter set
 
 Each parameter set must define:
 
-- [ ] Population size.
-- [ ] Number of generations.
-- [ ] Crossover probability.
-- [ ] Mutation probability.
+- [x] Population size.
+- [x] Number of generations.
+- [x] Crossover probability.
+- [x] Mutation probability.
 
 ### Parameter Set 1
 
-- [ ] Population size defined.
-- [ ] Generation count defined.
-- [ ] Crossover probability defined.
-- [ ] Mutation probability defined.
+- [x] Population size defined.
+- [x] Generation count defined.
+- [x] Crossover probability defined.
+- [x] Mutation probability defined.
 
 ### Parameter Set 2
 
-- [ ] Population size defined.
-- [ ] Generation count defined.
-- [ ] Crossover probability defined.
-- [ ] Mutation probability defined.
+- [x] Population size defined.
+- [x] Generation count defined.
+- [x] Crossover probability defined.
+- [x] Mutation probability defined.
 
 ### Parameter Set 3
 
-- [ ] Population size defined.
-- [ ] Generation count defined.
-- [ ] Crossover probability defined.
-- [ ] Mutation probability defined.
+- [x] Population size defined.
+- [x] Generation count defined.
+- [x] Crossover probability defined.
+- [x] Mutation probability defined.
 
 ---
 
@@ -201,19 +201,19 @@ There are:
 
 This gives **18 benchmark/parameter-set experiment configurations** before repeated stochastic runs.
 
-- [ ] Run all 6 selected benchmark instances with Parameter Set 1.
-- [ ] Run all 6 selected benchmark instances with Parameter Set 2.
-- [ ] Run all 6 selected benchmark instances with Parameter Set 3.
+- [x] Run all 6 selected benchmark instances with Parameter Set 1.
+- [x] Run all 6 selected benchmark instances with Parameter Set 2.
+- [x] Run all 6 selected benchmark instances with Parameter Set 3.
 
 Because the GA is stochastic:
 
-- [ ] Perform at least 10 independent runs for every experiment configuration.
-- [ ] Preferably support up to 30 independent runs per configuration.
-- [ ] Do not base conclusions on a single run.
+- [x] Perform at least 10 independent runs for every experiment configuration.
+- [x] Preferably support up to 30 independent runs per configuration.
+- [x] Do not base conclusions on a single run.
 
 At the minimum of 10 repetitions, this means:
 
-- [ ] Run at least **180 independent GA runs in total**.
+- [x] Run at least **180 independent GA runs in total**.
 
 At 30 repetitions:
 
@@ -225,42 +225,42 @@ At 30 repetitions:
 
 For every experiment configuration, calculate and store:
 
-- [ ] **Best makespan (`Cmax_min`)** — best solution found across the independent runs.
-- [ ] **Worst makespan (`Cmax_max`)** — worst solution found across the independent runs.
-- [ ] **Average (`μ`)** — mean makespan across runs.
-- [ ] **Standard deviation (`σ`)** — variation/stability across runs.
-- [ ] **Execution time (seconds)** — computational efficiency.
-- [ ] **Convergence rate** — generation number at which the best value stabilizes.
+- [x] **Best makespan (`Cmax_min`)** — best solution found across the independent runs.
+- [x] **Worst makespan (`Cmax_max`)** — worst solution found across the independent runs.
+- [x] **Average (`μ`)** — mean makespan across runs.
+- [x] **Standard deviation (`σ`)** — variation/stability across runs.
+- [x] **Execution time (seconds)** — computational efficiency.
+- [x] **Convergence rate** — generation number at which the best value stabilizes.
 
 Recommended for reproducibility:
 
-- [ ] Store the random seed used for each run.
-- [ ] Save raw per-run results.
-- [ ] Save per-generation best fitness/makespan values.
+- [x] Store the random seed used for each run.
+- [x] Save raw per-run results.
+- [x] Save per-generation best fitness/makespan values.
 
 ---
 
 ## 14. Comparison and Analysis Outputs
 
-- [ ] Compare performance across Small, Medium, and Large problem categories.
-- [ ] Compare all three GA parameter sets.
-- [ ] Compare solution quality using the required statistical metrics.
-- [ ] Compare execution time.
-- [ ] Compare convergence behavior.
-- [ ] Compare obtained makespans with JSPLib best-known bounds/solutions.
-- [ ] Analyze the relationship between GA parameters and obtained results.
-- [ ] Analyze how parameter values affect the early evolutionary stages.
-- [ ] Analyze how parameter values affect the later evolutionary stages.
+- [x] Compare performance across Small, Medium, and Large problem categories.
+- [x] Compare all three GA parameter sets.
+- [x] Compare solution quality using the required statistical metrics.
+- [x] Compare execution time.
+- [x] Compare convergence behavior.
+- [x] Compare obtained makespans with JSPLib best-known bounds/solutions.
+- [x] Analyze the relationship between GA parameters and obtained results.
+- [x] Analyze how parameter values affect the early evolutionary stages.
+- [x] Analyze how parameter values affect the later evolutionary stages.
 
 ---
 
 ## 15. Gantt / Schedule Visualization
 
-- [ ] Generate a Gantt chart or equivalent visualization of a decoded JSSP schedule.
-- [ ] Clearly identify machines.
-- [ ] Clearly identify jobs/operations.
-- [ ] Show operation start and finish times.
-- [ ] Ensure the visualized schedule matches the decoder output.
+- [x] Generate a Gantt chart or equivalent visualization of a decoded JSSP schedule.
+- [x] Clearly identify machines.
+- [x] Clearly identify jobs/operations.
+- [x] Show operation start and finish times.
+- [x] Ensure the visualized schedule matches the decoder output.
 
 ---
 
@@ -268,40 +268,40 @@ Recommended for reproducibility:
 
 Prepare at least one worked example using a small benchmark or reduced illustrative instance.
 
-- [ ] Show the chromosome/genotype.
-- [ ] Show how chromosome entries map to job operations.
-- [ ] Show the operation order generated by the decoder.
-- [ ] Show start times.
-- [ ] Show finish times.
-- [ ] Show the resulting schedule, e.g. as a table.
-- [ ] Show the corresponding Gantt chart.
-- [ ] Show the resulting makespan (`Cmax`).
+- [x] Show the chromosome/genotype.
+- [x] Show how chromosome entries map to job operations.
+- [x] Show the operation order generated by the decoder.
+- [x] Show start times.
+- [x] Show finish times.
+- [x] Show the resulting schedule, e.g. as a table.
+- [x] Show the corresponding Gantt chart.
+- [x] Show the resulting makespan (`Cmax`).
 
 ---
 
 ## 17. Code Quality / Repository Requirements
 
-- [ ] Create a GitHub repository for the project.
-- [ ] Repository is shareable.
-- [ ] Repository is well organized.
-- [ ] Code is written in Python.
-- [ ] Code is executable.
-- [ ] Code generates the required outputs.
-- [ ] Include clean source code.
-- [ ] Include inline documentation/comments where appropriate.
-- [ ] Explain key GA implementation details.
-- [ ] Explain chromosome representation.
-- [ ] Explain genetic operators.
-- [ ] Explain the schedule-building/decoding function.
-- [ ] Include example data or clear instructions for obtaining/loading it.
-- [ ] Include dependency information.
-- [ ] Include a `README.md`.
+- [x] Create a GitHub repository for the project.
+- [x] Repository is shareable.
+- [x] Repository is well organized.
+- [x] Code is written in Python.
+- [x] Code is executable.
+- [x] Code generates the required outputs.
+- [x] Include clean source code.
+- [x] Include inline documentation/comments where appropriate.
+- [x] Explain key GA implementation details.
+- [x] Explain chromosome representation.
+- [x] Explain genetic operators.
+- [x] Explain the schedule-building/decoding function.
+- [x] Include example data or clear instructions for obtaining/loading it.
+- [x] Include dependency information.
+- [x] Include a `README.md`.
 
 Libraries such as the following may be used:
 
-- [ ] `matplotlib` if needed for Gantt charts/plots.
-- [ ] `numpy` if useful.
-- [ ] `pandas` if useful.
+- [x] `matplotlib` if needed for Gantt charts/plots.
+- [x] `numpy` if useful.
+- [x] `pandas` if useful.
 
 ---
 
@@ -309,18 +309,19 @@ Libraries such as the following may be used:
 
 `README.md` should include:
 
-- [ ] Project description.
-- [ ] Installation instructions.
-- [ ] Dependency installation instructions.
-- [ ] Step-by-step setup instructions.
-- [ ] Instructions for running the GA.
-- [ ] Instructions for running the algorithm on the example/benchmark data.
-- [ ] Explanation of repository structure.
+- [x] Project description.
+- [x] Installation instructions.
+- [x] Dependency installation instructions.
+- [x] Step-by-step setup instructions.
+- [x] Instructions for running the GA.
+- [x] Instructions for running the algorithm on the example/benchmark data.
+- [x] Explanation of repository structure.
 - [ ] Explanation of chromosome representation.
-- [ ] Explanation of the Schedule Building Algorithm / decoder.
+- [x] Explanation of the Schedule Building Algorithm / decoder.
 - [ ] Explanation of relevant genetic operators.
 
 ---
+
 
 ## 19. Report Requirements
 
